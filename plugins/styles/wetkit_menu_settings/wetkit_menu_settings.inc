@@ -33,13 +33,25 @@ function theme_wetkit_menu_wetkit_menu_settings_render_pane($vars) {
     foreach ($children as $element_key => $element_value) {
       $content->content['#content'][$element_key]['#attributes']['class'][] = (isset($settings['wetkit_menu_settings_custom_css'])) ? $settings['wetkit_menu_settings_custom_css'] : '';
       $mlid_matches = FALSE;
-      foreach($content->content['#config']['show_menu_items'] as &$menu_item) {
+      foreach($content->content['#config']['show_menu_items'] as &$menu_item) {   
+        if (module_exists('i18n')) {
+          $menu_translated = menu_link_load($menu_item);
+          if (!empty($menu_translated['i18n_tsid'])) {
+            if ($translation_set = i18n_translation_set_load($menu_translated['i18n_tsid'])) {
+              $menu_translations = $translation_set->get_translations();
+              global $language;
+              if ($language->language == 'fr') {
+                $menu_item = $menu_translations['fr']['mlid'];
+              }
+            }
+          }
+        }
         if ($element_value['#original_link']['mlid'] == $menu_item) {
           $mlid_matches = TRUE;
         }
       }
       if (!$mlid_matches) {
-	    unset($content->content['#content'][$element_key]);
+        unset($content->content['#content'][$element_key]);
       }
     }
   }
