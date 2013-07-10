@@ -18,6 +18,16 @@ function wetkit_menu_migrate_api() {
 }
 
 /**
+ * Implements hook_page_build().
+ */
+function wetkit_menu_page_build() {
+  drupal_add_css(drupal_get_path('module', 'wetkit_menu') . '/css/wetkit_menu.css', array(
+    'group' => CSS_THEME,
+    'every_page' => TRUE,
+  ));
+}
+
+/**
  * Implements hook_ctools_plugin_directory().
  */
 function wetkit_menu_ctools_plugin_directory($module, $plugin) {

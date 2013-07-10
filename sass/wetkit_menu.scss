@@ -1,0 +1,34 @@
+/**
+ * @file
+ * Custom SCSS for the WetKit Menu module.
+ */
+
+@charset "utf-8";
+
+.mb-menu {
+  li {
+    h4 {
+      a {
+        text-decoration: none !important;
+        &:hover {
+          text-decoration: underline !important;
+        }
+      }
+    }
+    a {
+      font-weight: normal !important;
+    }
+  }
+  ul {
+    li {
+      &.top-level {
+        a {
+          text-decoration: none !important;
+          &:hover {
+            text-decoration: underline !important;
+          }
+        }
+      }
+    }
+  }
+}
