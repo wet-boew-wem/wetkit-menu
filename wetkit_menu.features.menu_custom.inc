@@ -20,6 +20,7 @@ function wetkit_menu_menu_default_menu_custom() {
   );
   // Translatables
   // Included for use with string extractors like potx.
+  t('Menu Panel Insert');
   t('Menu Panel Insert: WetKit');
 
 
