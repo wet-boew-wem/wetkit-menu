@@ -13,6 +13,34 @@ require_once 'theme/menu.theme.inc';
 function wetkit_menu_migrate_api() {
   $api = array(
     'api' => 2,
+
+    // Migrations can be organized into groups. The key used here will be the
+    // machine name of the group, which can be used in Drush:
+    //  drush migrate-import --group=WetKitMigrate
+    //
+    // The title is a required argument which is displayed for the group in the
+    // UI. You may also have additional arguments for any other data which is
+    // common to all migrations in the group.
+    'groups' => array(
+      'WetKitGroupMigrateMenu' => array(
+        'title' => t('WetKitGroupMigrateMenu Imports'),
+      ),
+    ),
+
+    // Here we register the individual migrations. The keys below
+    // are the machine names of the migrations, and the class_name
+    // argument is required. The group_name is optional (defaulting to 'default')
+    // but specifying it is a best practice.
+    'migrations' => array(
+      'WetKitMigrateMegaMenu' => array(
+        'class_name' => 'WetKitMigrateMegaMenu',
+        'group_name' => 'WetKitGroupMigrateMenu',
+      ),
+      'WetKitMigrateMegaMenuLinks' => array(
+        'class_name' => 'WetKitMigrateMegaMenuLinks',
+        'group_name' => 'WetKitGroupMigrateMenu',
+      ),
+    ),
   );
   return $api;
 }

@@ -12,8 +12,8 @@ class WetKitMigrateMegaMenu extends XMLMigration {
   /**
    * Constructor.
    */
-  public function __construct() {
-    parent::__construct();
+  public function __construct($arguments) {
+    parent::__construct($arguments);
     $this->description = t('Migrate the WetKit MegaMenu');
 
     $this->map = new MigrateSQLMap($this->machineName,
@@ -62,8 +62,8 @@ class WetKitMigrateMegaMenuLinks extends XMLMigration {
   /**
    * Constructor.
    */
-  public function __construct() {
-    parent::__construct();
+  public function __construct($arguments) {
+    parent::__construct($arguments);
 
     $this->description = t('Migrate the WetKit Menu Links');
     $this->dependencies = array('WetKitMigrateMegaMenu');
