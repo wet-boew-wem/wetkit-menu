@@ -15,10 +15,6 @@ function wetkit_menu_install() {
     drupal_set_message($requirements['wetkit_menu']['description'], 'warning');
   }
 
-  // Migration Instantiate.
-  MigrationBase::registerMigration('WetKitMigrateMegaMenu');
-  MigrationBase::registerMigration('WetKitMigrateMegaMenuLinks');
-
   // Allow each menu to be menu_minipanel-ized, with some exceptions.
   _wetkit_menu_enable_menus();
 }
@@ -27,10 +23,6 @@ function wetkit_menu_install() {
  * Implements hook_uninstall().
  */
 function wetkit_menu_uninstall() {
-  // Migration Destruction.
-  MigrationBase::deregisterMigration('WetKitMigrateMegaMenu');
-  MigrationBase::deregisterMigration('WetKitMigrateMegaMenuLinks');
-
   // Delete variables.
   variable_del('wetkit_menu_hover');
   variable_del('wetkit_menu_default_callbacks');
