@@ -44,11 +44,21 @@ function wetkit_menu_menu_link_menu_block_megamenu($variables) {
   if ($depth == 1) {
     // Has children menu items.
     if ($has_children == 1) {
-      if (!at_get_setting('render_mb_main_link')) {
-        return '<li><section><h3>' . $has_nolink . '</h3><div class="mb-sm">' . $sub_menu . $mb_mainlink . '</div></section></li>';
+      if (function_exists('at_get_setting')) {
+        if (!at_get_setting('render_mb_main_link')) {
+          return '<li><section><h3>' . $has_nolink . '</h3><div class="mb-sm">' . $sub_menu . $mb_mainlink . '</div></section></li>';
+        }
+        else {
+          return '<li><section><h3>' . $has_nolink . '</h3><div class="mb-sm">' . $sub_menu . '</div></section></li>';
+        }
       }
-      else {
-        return '<li><section><h3>' . $has_nolink . '</h3><div class="mb-sm">' . $sub_menu . '</div></section></li>';
+      else if (function_exists('omega_theme_get_setting')) {
+        if (!omega_theme_get_setting('wetkit_render_mb_main_link')) {
+          return '<li><section><h3>' . $has_nolink . '</h3><div class="mb-sm">' . $sub_menu . $mb_mainlink . '</div></section></li>';
+        }
+        else {
+          return '<li><section><h3>' . $has_nolink . '</h3><div class="mb-sm">' . $sub_menu . '</div></section></li>';
+        }
       }
     }
     // No children menu items.
