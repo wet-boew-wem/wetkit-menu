@@ -80,6 +80,7 @@ function wetkit_menu_theme($existing, $type, $theme, $path) {
 function wetkit_menu_theme_registry_alter(&$theme_registry) {
   $theme_registry['link']['old function'] = $theme_registry['link']['function'];
   $theme_registry['link']['function'] = 'wetkit_menu__preprocess_link';
+  $theme_registry['link']['final'] = TRUE;
 
   if (module_exists('menu_block')) {
     $theme_registry['menu_link__menu_block']['base hook'] = 'menu_link';
@@ -88,6 +89,7 @@ function wetkit_menu_theme_registry_alter(&$theme_registry) {
     $theme_registry['menu_link__menu_block']['file'] = drupal_get_path('module', 'wetkit_menu') . '/theme/menu.theme.inc';
     $theme_registry['menu_link__menu_block']['function'] = 'wetkit_menu_menu_link_menu_block_sidebar';
     $theme_registry['menu_link__menu_block']['type'] = 'theme_engine';
+    $theme_registry['menu_link__menu_block']['final'] = TRUE;
 
     $theme_registry['menu_link__menu_block__wetkit_menu_blocks_1']['base hook'] = 'menu_link';
     $theme_registry['menu_link__menu_block__wetkit_menu_blocks_1']['render element'] = 'element';
@@ -95,6 +97,7 @@ function wetkit_menu_theme_registry_alter(&$theme_registry) {
     $theme_registry['menu_link__menu_block__wetkit_menu_blocks_1']['file'] = drupal_get_path('module', 'wetkit_menu') . '/theme/menu.theme.inc';
     $theme_registry['menu_link__menu_block__wetkit_menu_blocks_1']['function'] = 'wetkit_menu_menu_link_menu_block_megamenu';
     $theme_registry['menu_link__menu_block__wetkit_menu_blocks_1']['type'] = 'theme_engine';
+    $theme_registry['menu_link__menu_block__wetkit_menu_blocks_1']['final'] = TRUE;
 
     $theme_registry['menu_link__menu_block__wetkit_menu_blocks_2']['base hook'] = 'menu_link';
     $theme_registry['menu_link__menu_block__wetkit_menu_blocks_2']['render element'] = 'element';
@@ -102,6 +105,7 @@ function wetkit_menu_theme_registry_alter(&$theme_registry) {
     $theme_registry['menu_link__menu_block__wetkit_menu_blocks_2']['file'] = drupal_get_path('module', 'wetkit_menu') . '/theme/menu.theme.inc';
     $theme_registry['menu_link__menu_block__wetkit_menu_blocks_2']['function'] = 'wetkit_menu_menu_link_menu_block_footer';
     $theme_registry['menu_link__menu_block__wetkit_menu_blocks_2']['type'] = 'theme_engine';
+    $theme_registry['menu_link__menu_block__wetkit_menu_blocks_2']['final'] = TRUE;
 
     $theme_registry['menu_link__menu_block__wetkit_menu_minipanel']['base hook'] = 'menu_link';
     $theme_registry['menu_link__menu_block__wetkit_menu_minipanel']['render element'] = 'element';
@@ -109,6 +113,7 @@ function wetkit_menu_theme_registry_alter(&$theme_registry) {
     $theme_registry['menu_link__menu_block__wetkit_menu_minipanel']['file'] = drupal_get_path('module', 'wetkit_menu') . '/theme/menu.theme.inc';
     $theme_registry['menu_link__menu_block__wetkit_menu_minipanel']['function'] = 'wetkit_menu_menu_link_menu_block_minipanel';
     $theme_registry['menu_link__menu_block__wetkit_menu_minipanel']['type'] = 'theme_engine';
+    $theme_registry['menu_link__menu_block__wetkit_menu_minipanel']['final'] = TRUE;
 
     $theme_registry['menu_link__menu_block__wetkit_menu_minipanel_focus']['base hook'] = 'menu_link';
     $theme_registry['menu_link__menu_block__wetkit_menu_minipanel_focus']['render element'] = 'element';
@@ -116,6 +121,7 @@ function wetkit_menu_theme_registry_alter(&$theme_registry) {
     $theme_registry['menu_link__menu_block__wetkit_menu_minipanel_focus']['file'] = drupal_get_path('module', 'wetkit_menu') . '/theme/menu.theme.inc';
     $theme_registry['menu_link__menu_block__wetkit_menu_minipanel_focus']['function'] = 'wetkit_menu_menu_link_menu_block_minipanel_focus';
     $theme_registry['menu_link__menu_block__wetkit_menu_minipanel_focus']['type'] = 'theme_engine';
+    $theme_registry['menu_link__menu_block__wetkit_menu_minipanel_focus']['final'] = TRUE;
 
     $theme_registry['menu_tree__main_menu']['base hook'] = 'menu_tree';
     $theme_registry['menu_tree__main_menu']['render element'] = 'tree';
@@ -123,6 +129,7 @@ function wetkit_menu_theme_registry_alter(&$theme_registry) {
     $theme_registry['menu_tree__main_menu']['file'] = drupal_get_path('module', 'wetkit_menu') . '/theme/menu.theme.inc';
     $theme_registry['menu_tree__main_menu']['function'] = 'wetkit_menu_menu_tree__main_menu';
     $theme_registry['menu_tree__main_menu']['type'] = 'theme_engine';
+    $theme_registry['menu_tree__main_menu']['final'] = TRUE;
 
     $theme_registry['menu_tree__menu_block']['base hook'] = 'menu_tree';
     $theme_registry['menu_tree__menu_block']['render element'] = 'tree';
@@ -130,6 +137,7 @@ function wetkit_menu_theme_registry_alter(&$theme_registry) {
     $theme_registry['menu_tree__menu_block']['file'] = drupal_get_path('module', 'wetkit_menu') . '/theme/menu.theme.inc';
     $theme_registry['menu_tree__menu_block']['function'] = 'wetkit_menu_menu_tree__menu_block';
     $theme_registry['menu_tree__menu_block']['type'] = 'theme_engine';
+    $theme_registry['menu_tree__menu_block']['final'] = TRUE;
   }
 }
 
