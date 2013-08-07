@@ -325,8 +325,8 @@ function wetkit_menu_default_panels_mini() {
     $pane->access = array();
     $pane->configuration = array(
       'menu_name' => 'wetkit-menu-minipanel',
-      'parent_mlid' => _wetkit_menu_get_mlid('wetkit_menu_minipanel_links_eng_4'),
-      'parent' => 'wetkit-menu-minipanel:' . _wetkit_menu_get_mlid('wetkit_menu_minipanel_links_eng_4'),
+      'parent_mlid' => _wetkit_menu_get_mlid('wetkit_menu_minipanel_links_eng_4_a'),
+      'parent' => 'wetkit-menu-minipanel:' . _wetkit_menu_get_mlid('wetkit_menu_minipanel_links_eng_4_a'),
       'title_link' => 0,
       'admin_title' => '',
       'level' => '1',
