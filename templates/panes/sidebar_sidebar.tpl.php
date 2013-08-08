@@ -27,21 +27,9 @@
  *   data including the contexts and all of the other panes being displayed.
  */
 ?>
-<?php if ($pane_prefix): ?>
-  <?php print $pane_prefix; ?>
-<?php endif; ?>
-
 <?php print render($title_prefix); ?>
   <?php if ($title): ?>
-    <?php if (!theme_get_setting('render_no_link')): ?>
-      <h4><?php print $title; ?></h4>
-    <?php else: ?>
-      <h4 data-role="list-divider"><?php print $title; ?></h4>    
-    <?php endif; ?>
+    <h3 class="top-section"><a href="#"><?php print $title; ?></a></h4>
   <?php endif; ?>
 <?php print render($title_suffix); ?>
 <?php print render($content); ?>
-
-<?php if ($pane_suffix): ?>
-  <?php print $pane_suffix; ?>
-<?php endif; ?>

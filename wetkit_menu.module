@@ -30,7 +30,10 @@ function wetkit_menu_ctools_plugin_directory($module, $plugin) {
 function wetkit_menu_preprocess_panels_pane(&$variables) {
   if (isset($variables['content']['#delta'])) {
     // All Custom WetKit Menu Items.
-    if (strpos($variables['content']['#delta'], 'ctools-wetkit-menu-minipanel') === 0) {
+    if (strpos($variables['content']['#delta'], 'ctools-megamenu') === 0) {
+      $variables['theme_hook_suggestions'][] = 'wetkit_menu_panels_pane';
+    }
+    if (strpos($variables['content']['#delta'], 'ctools-sidebar') === 0) {
       $variables['theme_hook_suggestions'][] = 'wetkit_menu_panels_pane';
     }
   }
@@ -41,7 +44,10 @@ function wetkit_menu_preprocess_panels_pane(&$variables) {
  */
 function wetkit_menu_preprocess_menu_block_wrapper(&$variables) {
   // All Custom WetKit Menu Items.
-  if (strpos($variables['delta'], 'ctools-wetkit-menu-minipanel') === 0) {
+  if (strpos($variables['delta'], 'ctools-megamenu') === 0) {
+    $variables['theme_hook_suggestions'][] = 'wetkit_menu_megamenu_blocks';
+  }
+  if (strpos($variables['delta'], 'ctools-sidebar') === 0) {
     $variables['theme_hook_suggestions'][] = 'wetkit_menu_megamenu_blocks';
   }
 }
@@ -54,22 +60,22 @@ function wetkit_menu_theme($existing, $type, $theme, $path) {
     'wetkit_menu_megamenu_blocks' => array(
       'render element' => 'element',
       'path' => drupal_get_path('module', 'wetkit_menu') . '/templates/menu_block',
-      'template' => 'wetkit_menu_minipanel',
+      'template' => 'megamenu',
     ),
     'wetkit_menu_panels_pane' => array(
       'render element' => 'element',
       'path' => drupal_get_path('module', 'wetkit_menu') . '/templates/panes',
-      'template' => 'wetkit_menu_minipanel',
+      'template' => 'megamenu',
     ),
     'wetkit_menu_panels_pane_nav' => array(
       'render element' => 'element',
       'path' => drupal_get_path('module', 'wetkit_menu') . '/templates/panes',
-      'template' => 'wetkit_menu_minipanel_nav',
+      'template' => 'megamenu_nav',
     ),
     'wetkit_menu_panels_pane_sidebar' => array(
       'render element' => 'element',
       'path' => drupal_get_path('module', 'wetkit_menu') . '/templates/panes',
-      'template' => 'wetkit_menu_minipanel_sidebar',
+      'template' => 'megamenu_sidebar',
     ),
   );
 }
@@ -91,37 +97,45 @@ function wetkit_menu_theme_registry_alter(&$theme_registry) {
     $theme_registry['menu_link__menu_block']['type'] = 'theme_engine';
     $theme_registry['menu_link__menu_block']['final'] = TRUE;
 
-    $theme_registry['menu_link__menu_block__wetkit_menu_blocks_1']['base hook'] = 'menu_link';
-    $theme_registry['menu_link__menu_block__wetkit_menu_blocks_1']['render element'] = 'element';
-    $theme_registry['menu_link__menu_block__wetkit_menu_blocks_1']['theme path'] = drupal_get_path('module', 'wetkit_menu');
-    $theme_registry['menu_link__menu_block__wetkit_menu_blocks_1']['file'] = drupal_get_path('module', 'wetkit_menu') . '/theme/menu.theme.inc';
-    $theme_registry['menu_link__menu_block__wetkit_menu_blocks_1']['function'] = 'wetkit_menu_menu_link_menu_block_megamenu';
-    $theme_registry['menu_link__menu_block__wetkit_menu_blocks_1']['type'] = 'theme_engine';
-    $theme_registry['menu_link__menu_block__wetkit_menu_blocks_1']['final'] = TRUE;
+    $theme_registry['menu_link__menu_block__main_menu']['base hook'] = 'menu_link';
+    $theme_registry['menu_link__menu_block__main_menu']['render element'] = 'element';
+    $theme_registry['menu_link__menu_block__main_menu']['theme path'] = drupal_get_path('module', 'wetkit_menu');
+    $theme_registry['menu_link__menu_block__main_menu']['file'] = drupal_get_path('module', 'wetkit_menu') . '/theme/menu.theme.inc';
+    $theme_registry['menu_link__menu_block__main_menu']['function'] = 'wetkit_menu_menu_link_menu_block_megamenu';
+    $theme_registry['menu_link__menu_block__main_menu']['type'] = 'theme_engine';
+    $theme_registry['menu_link__menu_block__main_menu']['final'] = TRUE;
 
-    $theme_registry['menu_link__menu_block__wetkit_menu_blocks_2']['base hook'] = 'menu_link';
-    $theme_registry['menu_link__menu_block__wetkit_menu_blocks_2']['render element'] = 'element';
-    $theme_registry['menu_link__menu_block__wetkit_menu_blocks_2']['theme path'] = drupal_get_path('module', 'wetkit_menu');
-    $theme_registry['menu_link__menu_block__wetkit_menu_blocks_2']['file'] = drupal_get_path('module', 'wetkit_menu') . '/theme/menu.theme.inc';
-    $theme_registry['menu_link__menu_block__wetkit_menu_blocks_2']['function'] = 'wetkit_menu_menu_link_menu_block_footer';
-    $theme_registry['menu_link__menu_block__wetkit_menu_blocks_2']['type'] = 'theme_engine';
-    $theme_registry['menu_link__menu_block__wetkit_menu_blocks_2']['final'] = TRUE;
+    $theme_registry['menu_link__menu_block__footer_menu']['base hook'] = 'menu_link';
+    $theme_registry['menu_link__menu_block__footer_menu']['render element'] = 'element';
+    $theme_registry['menu_link__menu_block__footer_menu']['theme path'] = drupal_get_path('module', 'wetkit_menu');
+    $theme_registry['menu_link__menu_block__footer_menu']['file'] = drupal_get_path('module', 'wetkit_menu') . '/theme/menu.theme.inc';
+    $theme_registry['menu_link__menu_block__footer_menu']['function'] = 'wetkit_menu_menu_link_menu_block_footer';
+    $theme_registry['menu_link__menu_block__footer_menu']['type'] = 'theme_engine';
+    $theme_registry['menu_link__menu_block__footer_menu']['final'] = TRUE;
 
-    $theme_registry['menu_link__menu_block__wetkit_menu_minipanel']['base hook'] = 'menu_link';
-    $theme_registry['menu_link__menu_block__wetkit_menu_minipanel']['render element'] = 'element';
-    $theme_registry['menu_link__menu_block__wetkit_menu_minipanel']['theme path'] = drupal_get_path('module', 'wetkit_menu');
-    $theme_registry['menu_link__menu_block__wetkit_menu_minipanel']['file'] = drupal_get_path('module', 'wetkit_menu') . '/theme/menu.theme.inc';
-    $theme_registry['menu_link__menu_block__wetkit_menu_minipanel']['function'] = 'wetkit_menu_menu_link_menu_block_minipanel';
-    $theme_registry['menu_link__menu_block__wetkit_menu_minipanel']['type'] = 'theme_engine';
-    $theme_registry['menu_link__menu_block__wetkit_menu_minipanel']['final'] = TRUE;
+    $theme_registry['menu_link__menu_block__megamenu']['base hook'] = 'menu_link';
+    $theme_registry['menu_link__menu_block__megamenu']['render element'] = 'element';
+    $theme_registry['menu_link__menu_block__megamenu']['theme path'] = drupal_get_path('module', 'wetkit_menu');
+    $theme_registry['menu_link__menu_block__megamenu']['file'] = drupal_get_path('module', 'wetkit_menu') . '/theme/menu.theme.inc';
+    $theme_registry['menu_link__menu_block__megamenu']['function'] = 'wetkit_menu_menu_link_menu_block_minipanel';
+    $theme_registry['menu_link__menu_block__megamenu']['type'] = 'theme_engine';
+    $theme_registry['menu_link__menu_block__megamenu']['final'] = TRUE;
 
-    $theme_registry['menu_link__menu_block__wetkit_menu_minipanel_focus']['base hook'] = 'menu_link';
-    $theme_registry['menu_link__menu_block__wetkit_menu_minipanel_focus']['render element'] = 'element';
-    $theme_registry['menu_link__menu_block__wetkit_menu_minipanel_focus']['theme path'] = drupal_get_path('module', 'wetkit_menu');
-    $theme_registry['menu_link__menu_block__wetkit_menu_minipanel_focus']['file'] = drupal_get_path('module', 'wetkit_menu') . '/theme/menu.theme.inc';
-    $theme_registry['menu_link__menu_block__wetkit_menu_minipanel_focus']['function'] = 'wetkit_menu_menu_link_menu_block_minipanel_focus';
-    $theme_registry['menu_link__menu_block__wetkit_menu_minipanel_focus']['type'] = 'theme_engine';
-    $theme_registry['menu_link__menu_block__wetkit_menu_minipanel_focus']['final'] = TRUE;
+    $theme_registry['menu_link__menu_block__sidebar']['base hook'] = 'menu_link';
+    $theme_registry['menu_link__menu_block__sidebar']['render element'] = 'element';
+    $theme_registry['menu_link__menu_block__sidebar']['theme path'] = drupal_get_path('module', 'wetkit_menu');
+    $theme_registry['menu_link__menu_block__sidebar']['file'] = drupal_get_path('module', 'wetkit_menu') . '/theme/menu.theme.inc';
+    $theme_registry['menu_link__menu_block__sidebar']['function'] = 'wetkit_menu_sidebar';
+    $theme_registry['menu_link__menu_block__sidebar']['type'] = 'theme_engine';
+    $theme_registry['menu_link__menu_block__sidebar']['final'] = TRUE;
+
+    $theme_registry['menu_link__menu_block__megamenu_focus']['base hook'] = 'menu_link';
+    $theme_registry['menu_link__menu_block__megamenu_focus']['render element'] = 'element';
+    $theme_registry['menu_link__menu_block__megamenu_focus']['theme path'] = drupal_get_path('module', 'wetkit_menu');
+    $theme_registry['menu_link__menu_block__megamenu_focus']['file'] = drupal_get_path('module', 'wetkit_menu') . '/theme/menu.theme.inc';
+    $theme_registry['menu_link__menu_block__megamenu_focus']['function'] = 'wetkit_menu_menu_link_menu_block_minipanel_focus';
+    $theme_registry['menu_link__menu_block__megamenu_focus']['type'] = 'theme_engine';
+    $theme_registry['menu_link__menu_block__megamenu_focus']['final'] = TRUE;
 
     $theme_registry['menu_tree__main_menu']['base hook'] = 'menu_tree';
     $theme_registry['menu_tree__main_menu']['render element'] = 'tree';
@@ -571,44 +585,55 @@ function wetkit_menu_excluded_path() {
 function wetkit_menu_menu_block_blocks() {
   // The array key is the block delta used by menu block.
   return array(
-    'wetkit_menu_mini_panels' => array(
-      'menu_name'   => 'wetkit-menu-minipanel',
+    'megamenu' => array(
+      'menu_name'   => 'megamenu',
       'parent_mlid' => 0,
       'title_link'  => 0,
-      'admin_title' => 'Menu Block: Menu Panel',
+      'admin_title' => 'Mega Menu Insert',
       'level'       => 1,
       'follow'      => 0,
       'depth'       => 0,
       'expanded'    => 1,
       'sort'        => 0,
     ),
-    'wetkit_menu_mini_panels_focus' => array(
-      'menu_name'   => 'wetkit-menu-minipanel-focus',
+    'megamenu_focus' => array(
+      'menu_name'   => 'megamenu-focus',
       'parent_mlid' => 0,
       'title_link'  => 0,
-      'admin_title' => 'Menu Block: Menu Panel Focus',
+      'admin_title' => 'Mega Menu Focus',
       'level'       => 1,
       'follow'      => 0,
       'depth'       => 0,
       'expanded'    => 1,
       'sort'        => 0,
     ),
-    'wetkit_menu_blocks-1' => array(
+    'main_menu' => array(
       'menu_name'   => 'main-menu',
       'parent_mlid' => 0,
       'title_link'  => 0,
-      'admin_title' => 'Menu Block: Mega Menu',
+      'admin_title' => 'Mega Menu',
       'level'       => 1,
       'follow'      => 0,
       'depth'       => 0,
       'expanded'    => 1,
       'sort'        => 0,
     ),
-    'wetkit_menu_blocks-2' => array(
+    'footer_menu' => array(
       'menu_name'   => 'menu-wet-mid-footer',
       'parent_mlid' => 0,
       'title_link'  => 0,
-      'admin_title' => 'Menu Block: Footer',
+      'admin_title' => 'Footer',
+      'level'       => 1,
+      'follow'      => 0,
+      'depth'       => 0,
+      'expanded'    => 1,
+      'sort'        => 0,
+    ),
+    'sidebar' => array(
+      'menu_name'   => 'sidebar',
+      'parent_mlid' => 0,
+      'title_link'  => 0,
+      'admin_title' => 'Sidebar',
       'level'       => 1,
       'follow'      => 0,
       'depth'       => 0,

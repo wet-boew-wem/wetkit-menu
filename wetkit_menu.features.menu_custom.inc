@@ -10,19 +10,29 @@
 function wetkit_menu_menu_default_menu_custom() {
   $menus = array();
 
-  // Exported menu: wetkit-menu-minipanel.
-  $menus['wetkit-menu-minipanel'] = array(
-    'menu_name' => 'wetkit-menu-minipanel',
-    'title' => 'Menu Panel Insert',
-    'description' => 'Menu Panel Insert: WetKit',
+  // Exported menu: megamenu.
+  $menus['megamenu'] = array(
+    'menu_name' => 'megamenu',
+    'title' => 'Mega Menu Insert',
+    'description' => 'Mega Menu Insert for WetKit',
+    'language' => 'und',
+    'i18n_mode' => 5,
+  );
+
+  // Exported menu: megamenu.
+  $menus['sidebar'] = array(
+    'menu_name' => 'sidebar',
+    'title' => 'Sidebar',
+    'description' => 'Sidebar for WetKit',
     'language' => 'und',
     'i18n_mode' => 5,
   );
   // Translatables
   // Included for use with string extractors like potx.
-  t('Menu Panel Insert');
-  t('Menu Panel Insert: WetKit');
-
+  t('Mega Menu Insert');
+  t('Mega Menu Insert for WetKit');
+  t('Sidebar');
+  t('Sidebar for WetKit');
 
   return $menus;
 }

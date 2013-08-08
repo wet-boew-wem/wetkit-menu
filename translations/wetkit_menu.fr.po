@@ -68,7 +68,7 @@ msgstr ""
 "représente la page d’accueil."
 
 #: wetkit_menu.features.menu_custom.inc:23
-msgid "Menu Panel Insert: WetKit"
+msgid "MegaMenu for WetKit"
 msgstr ""
 
 #: wetkit_menu.module:205
@@ -123,19 +123,19 @@ msgstr ""
 msgid "Toggle menu"
 msgstr ""
 
-#: (duplicate) wetkit_menu.install:98 
+#: (duplicate) wetkit_menu.install:98
 msgid "The module is enabled but the WET library has not been downloaded. This module will not work without qTip! Please see README.txt in the wetkit_menu directory for instructions on how to download WET, or use <a href=\"http://drupal.org/project/drush\">Drush</a> to download it via the following command:<br /><pre>drush download-qtip</pre>"
 msgstr ""
 
-#: (duplicate) wetkit_menu.install:100 ;109 
+#: (duplicate) wetkit_menu.install:100 ;109
 msgid "WetKit Menus"
 msgstr ""
 
-#: (duplicate) wetkit_menu.install:101 
+#: (duplicate) wetkit_menu.install:101
 msgid "WET library not found"
 msgstr ""
 
-#: (duplicate) wetkit_menu.install:110 
+#: (duplicate) wetkit_menu.install:110
 msgid "WET library in use: <em>!path</em>."
 msgstr ""
 

@@ -152,6 +152,69 @@ function wetkit_menu_menu_link_menu_block_minipanel($variables) {
  * @param array $variables
  *   An array of variables to pass to the theme template.
  */
+function wetkit_menu_sidebar($variables) {
+  $element = $variables['element'];
+  $depth = $element['#original_link']['depth'];
+  $has_children = $element['#original_link']['has_children'];
+  $has_nolink = (in_array($element['#href'], array('<nolink>')) ? '<a href="#">' . $element['#title'] . '</a>' : l($element['#title'], $element['#href'], $element['#localized_options']));
+
+  // Recursion.
+  $sub_menu = '';
+  if ($element['#below']) {
+    $sub_menu = drupal_render($element['#below']);
+  }
+
+  // Depth 1.
+  if ($depth == 1) {
+    if ($has_children == 1) {
+      if (isset($element['#below']['#children'])) {
+        $sub_menu = (preg_match('<h4>', $element['#below']['#children']) ? '<div><ul>' . $sub_menu . '</ul></div>' : '<div><ul>' . $sub_menu . '</ul></div>');
+      }
+      else {
+        $sub_menu = '<div><ul>' . $sub_menu . '</ul></div>';
+      }
+      return '<section><h3 class="top-section">' . $has_nolink . '</h3>' . $sub_menu . '</section>';
+    }
+    else {
+      return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
+    }
+  }
+  // Depth 2.
+  if ($depth == 2) {
+    if ($has_children == 1) {
+      return '<section><h4>' . $has_nolink . '</h4><ul>' . $sub_menu . '</ul></section>';
+    }
+    else {
+      $element['#attributes']['class'][] = 'top-level';
+      return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
+    }
+  }
+  // Depth 3.
+  if ($depth == 3) {
+    if ($has_children == 1) {
+      return '<li>' . $has_nolink . '</li><ul>' . $sub_menu . '</ul>';
+    }
+    else {
+      return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
+    }
+  }
+  // Depth 4+.
+  else {
+    if ($has_children == 1) {
+      return '<ul><li>' . $has_nolink . '<ul>' . $sub_menu . '</ul></li></ul>';
+    }
+    else {
+      return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
+    }
+  }
+}
+
+/**
+ * Override or insert variables into the menu link templates.
+ *
+ * @param array $variables
+ *   An array of variables to pass to the theme template.
+ */
 function wetkit_menu_menu_link_menu_block_sidebar($variables) {
   $element = $variables['element'];
   $depth = $element['#original_link']['depth'];
