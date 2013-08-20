@@ -14,7 +14,7 @@ function wetkit_menu_default_panels_mini() {
   $mini->disabled = FALSE; /* Edit this to true to make a default mini disabled initially */
   $mini->api_version = 1;
   $mini->name = 'wetkit_mini_panels_drupal_github';
-  $mini->category = 'WetKit Mini Panels';
+  $mini->category = 'WetKit';
   $mini->admin_title = 'WetKit Mini Panels: GitHub';
   $mini->admin_description = 'WetKit Mini Panels: Drupal GitHub';
   $mini->requiredcontexts = array();
@@ -118,7 +118,7 @@ function wetkit_menu_default_panels_mini() {
   $mini->disabled = FALSE; /* Edit this to true to make a default mini disabled initially */
   $mini->api_version = 1;
   $mini->name = 'wetkit_mini_panels_drupal_wcms';
-  $mini->category = 'WetKit Mini Panels';
+  $mini->category = 'WetKit';
   $mini->admin_title = 'WetKit Mini Panels: Drupal WCMS';
   $mini->admin_description = 'WetKit Mini Panels: Drupal WCMS';
   $mini->requiredcontexts = array();
@@ -293,7 +293,7 @@ function wetkit_menu_default_panels_mini() {
   $mini->disabled = FALSE; /* Edit this to true to make a default mini disabled initially */
   $mini->api_version = 1;
   $mini->name = 'wetkit_mini_panels_example_pages';
-  $mini->category = 'WetKit Mini Panels';
+  $mini->category = 'WetKit';
   $mini->admin_title = 'WetKit Mini Panels: Example Pages';
   $mini->admin_description = 'WetKit Mini Panels: Example Pages';
   $mini->requiredcontexts = array();
@@ -357,7 +357,7 @@ function wetkit_menu_default_panels_mini() {
   $mini->disabled = FALSE; /* Edit this to true to make a default mini disabled initially */
   $mini->api_version = 1;
   $mini->name = 'wetkit_mini_panels_home';
-  $mini->category = 'WetKit Mini Panels';
+  $mini->category = 'WetKit';
   $mini->admin_title = 'WetKit Mini Panels: Home';
   $mini->admin_description = 'WetKit Mini Panels: Home';
   $mini->requiredcontexts = array();
