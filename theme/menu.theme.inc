@@ -292,7 +292,7 @@ function wetkit_menu_menu_link_menu_block_minipanel_focus($variables) {
  * @param array $variables
  *   An array of variables to pass to the theme template.
  */
-function wetkit_menu_menu_link_menu_block_footer($variables) {
+function wetkit_menu_menu_link_menu_block_mid_footer($variables) {
   $element = $variables['element'];
   $sub_menu = '';
 

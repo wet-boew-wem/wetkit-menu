@@ -105,13 +105,13 @@ function wetkit_menu_theme_registry_alter(&$theme_registry) {
     $theme_registry['menu_link__menu_block__main_menu']['type'] = 'theme_engine';
     $theme_registry['menu_link__menu_block__main_menu']['final'] = TRUE;
 
-    $theme_registry['menu_link__menu_block__footer_menu']['base hook'] = 'menu_link';
-    $theme_registry['menu_link__menu_block__footer_menu']['render element'] = 'element';
-    $theme_registry['menu_link__menu_block__footer_menu']['theme path'] = drupal_get_path('module', 'wetkit_menu');
-    $theme_registry['menu_link__menu_block__footer_menu']['file'] = drupal_get_path('module', 'wetkit_menu') . '/theme/menu.theme.inc';
-    $theme_registry['menu_link__menu_block__footer_menu']['function'] = 'wetkit_menu_menu_link_menu_block_footer';
-    $theme_registry['menu_link__menu_block__footer_menu']['type'] = 'theme_engine';
-    $theme_registry['menu_link__menu_block__footer_menu']['final'] = TRUE;
+    $theme_registry['menu_link__menu_block__mid_footer_menu']['base hook'] = 'menu_link';
+    $theme_registry['menu_link__menu_block__mid_footer_menu']['render element'] = 'element';
+    $theme_registry['menu_link__menu_block__mid_footer_menu']['theme path'] = drupal_get_path('module', 'wetkit_menu');
+    $theme_registry['menu_link__menu_block__mid_footer_menu']['file'] = drupal_get_path('module', 'wetkit_menu') . '/theme/menu.theme.inc';
+    $theme_registry['menu_link__menu_block__mid_footer_menu']['function'] = 'wetkit_menu_menu_link_menu_block_mid_footer';
+    $theme_registry['menu_link__menu_block__mid_footer_menu']['type'] = 'theme_engine';
+    $theme_registry['menu_link__menu_block__mid_footer_menu']['final'] = TRUE;
 
     $theme_registry['menu_link__menu_block__megamenu']['base hook'] = 'menu_link';
     $theme_registry['menu_link__menu_block__megamenu']['render element'] = 'element';
@@ -618,8 +618,19 @@ function wetkit_menu_menu_block_blocks() {
       'expanded'    => 1,
       'sort'        => 0,
     ),
-    'footer_menu' => array(
+    'mid_footer_menu' => array(
       'menu_name'   => 'menu-wet-mid-footer',
+      'parent_mlid' => 0,
+      'title_link'  => 0,
+      'admin_title' => 'Mid Footer',
+      'level'       => 1,
+      'follow'      => 0,
+      'depth'       => 0,
+      'expanded'    => 1,
+      'sort'        => 0,
+    ),
+    'footer_menu' => array(
+      'menu_name'   => 'menu-wet-footer',
       'parent_mlid' => 0,
       'title_link'  => 0,
       'admin_title' => 'Footer',
