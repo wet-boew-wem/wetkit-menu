@@ -14,12 +14,11 @@ function wetkit_menu_menu_default_menu_custom() {
   $menus['megamenu'] = array(
     'menu_name' => 'megamenu',
     'title' => 'Mega Menu (Insert)',
-    'description' => 'Mini Panel based MegaMenu',
+    'description' => 'Mega Menu (Insert) for WetKit',
     'language' => 'und',
     'i18n_mode' => 5,
   );
-
-  // Exported menu: megamenu.
+  // Exported menu: sidebar.
   $menus['sidebar'] = array(
     'menu_name' => 'sidebar',
     'title' => 'Sidebar',
@@ -33,6 +32,7 @@ function wetkit_menu_menu_default_menu_custom() {
   t('Mega Menu (Insert) for WetKit');
   t('Sidebar');
   t('Sidebar for WetKit');
+
 
   return $menus;
 }
