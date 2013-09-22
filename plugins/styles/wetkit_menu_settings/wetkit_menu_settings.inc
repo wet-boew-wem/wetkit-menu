@@ -25,15 +25,15 @@ function theme_wetkit_menu_wetkit_menu_settings_render_pane($vars) {
 
   // Shows just the marked sub-menu items and removes all others.
   if (isset($settings['wetkit_menu_settings_show_marked_items']) && ($settings['wetkit_menu_settings_show_marked_items'] == 1)) {
-    $children = array_intersect_key($element, array_flip(element_children($element)));    
-    foreach($content->content['#config']['show_menu_items'] as &$menu_item) {
-     list($conf['show_menu_name'], $conf['show_item_mlid']) = explode(':', $menu_item);
-     $menu_item = $conf['show_item_mlid'];
+    $children = array_intersect_key($element, array_flip(element_children($element)));
+    foreach ($content->content['#config']['show_menu_items'] as &$menu_item) {
+      list($conf['show_menu_name'], $conf['show_item_mlid']) = explode(':', $menu_item);
+      $menu_item = $conf['show_item_mlid'];
     }
     foreach ($children as $element_key => $element_value) {
       $content->content['#content'][$element_key]['#attributes']['class'][] = (isset($settings['wetkit_menu_settings_custom_css'])) ? $settings['wetkit_menu_settings_custom_css'] : '';
       $mlid_matches = FALSE;
-      foreach($content->content['#config']['show_menu_items'] as &$menu_item) {   
+      foreach ($content->content['#config']['show_menu_items'] as &$menu_item) {
         if (module_exists('i18n')) {
           $menu_translated = menu_link_load($menu_item);
           if (!empty($menu_translated['i18n_tsid'])) {
@@ -69,7 +69,7 @@ function theme_wetkit_menu_wetkit_menu_settings_render_pane($vars) {
 
   // Custom CSS applied to each Menu Item.
   if (isset($settings['wetkit_menu_settings_strip_sub_items']) && ($settings['wetkit_menu_settings_strip_sub_items'] == 0) &&
-      isset($settings['wetkit_menu_settings_show_marked_items']) && ($settings['wetkit_menu_settings_show_marked_items'] == 0) && 
+      isset($settings['wetkit_menu_settings_show_marked_items']) && ($settings['wetkit_menu_settings_show_marked_items'] == 0) &&
       isset($settings['wetkit_menu_settings_custom_css']) && ($settings['wetkit_menu_settings_custom_css'] == 'top-level')) {
     $children = array_intersect_key($element, array_flip(element_children($element)));
     foreach ($children as $element_key => $element_value) {

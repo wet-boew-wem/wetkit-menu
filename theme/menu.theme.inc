@@ -52,7 +52,7 @@ function wetkit_menu_menu_link_menu_block_megamenu($variables) {
           return '<li><section><h3>' . $has_nolink . '</h3><div class="mb-sm">' . $sub_menu . '</div></section></li>';
         }
       }
-      else if (function_exists('omega_theme_get_setting')) {
+      elseif (function_exists('omega_theme_get_setting')) {
         if (!omega_theme_get_setting('wetkit_render_mb_main_link')) {
           return '<li><section><h3>' . $has_nolink . '</h3><div class="mb-sm">' . $sub_menu . $mb_mainlink . '</div></section></li>';
         }
