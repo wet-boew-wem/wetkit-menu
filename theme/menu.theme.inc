@@ -295,6 +295,7 @@ function wetkit_menu_menu_link_menu_block_minipanel_focus($variables) {
 function wetkit_menu_menu_link_menu_block_mid_footer($variables) {
   $element = $variables['element'];
   $sub_menu = '';
+  $has_children = $element['#original_link']['has_children'];
 
   // Custom Logic Based on Theme Selection (Internet, Intranet or Base).
   if (variable_get('wetkit_wetboew_theme', 0) == 2) {
@@ -308,13 +309,24 @@ function wetkit_menu_menu_link_menu_block_mid_footer($variables) {
     $sub_menu = drupal_render($element['#below']);
   }
   if ($element['#original_link']['depth'] == 1) {
-    if (in_array($element['#href'], array('<nolink>'))) {
-      $output = '<h4 class="' . $theme_prefix . '-col-head">' . $element['#title'] . '</h4>';
+    if ($has_children == 1) {
+      if (in_array($element['#href'], array('<nolink>'))) {
+        $output = '<h4 class="' . $theme_prefix . '-col-head">' . $element['#title'] . '</h4>';
+      }
+      else {
+        $output = '<h4 class="' . $theme_prefix . '-col-head">' . l($element['#title'], $element['#href'], $element['#localized_options']) . '</h4>';
+      }
+      return '<section><div class="span-2">' . $output . '<ul>' . $sub_menu . '</ul>' . "</div></section>\n";
     }
     else {
-      $output = '<h4 class="' . $theme_prefix . '-col-head">' . l($element['#title'], $element['#href'], $element['#localized_options']) . '</h4>';
+      if (in_array($element['#href'], array('<nolink>'))) {
+        $output = '<div class="' . $theme_prefix . '-col-head">' . $element['#title'] . '</div>';
+      }
+      else {
+        $output = '<div class="' . $theme_prefix . '-col-head">' . l($element['#title'], $element['#href'], $element['#localized_options']) . '</div>';
+      }
+      return '<div class="span-2">' . $output . "</div>";
     }
-    return '<section><div class="span-2">' . $output . '<ul>' . $sub_menu . '</ul>' . "</div></section>\n";
   }
   else {
     if (in_array($element['#href'], array('<nolink>'))) {
