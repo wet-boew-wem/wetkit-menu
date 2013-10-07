@@ -14,7 +14,7 @@ function wetkit_menu_menu_default_menu_custom() {
   $menus['megamenu'] = array(
     'menu_name' => 'megamenu',
     'title' => 'Mega Menu (Insert)',
-    'description' => 'Mega Menu (Insert) for WetKit',
+    'description' => 'Mega Menu (Insert) Menu.',
     'language' => 'und',
     'i18n_mode' => 5,
   );
@@ -22,16 +22,16 @@ function wetkit_menu_menu_default_menu_custom() {
   $menus['sidebar'] = array(
     'menu_name' => 'sidebar',
     'title' => 'Sidebar',
-    'description' => 'Sidebar for WetKit',
+    'description' => 'Sidebar Menu.',
     'language' => 'und',
     'i18n_mode' => 5,
   );
   // Translatables
   // Included for use with string extractors like potx.
   t('Mega Menu (Insert)');
-  t('Mega Menu (Insert) for WetKit');
+  t('Mega Menu (Insert) Menu.');
   t('Sidebar');
-  t('Sidebar for WetKit');
+  t('Sidebar Menu.');
 
 
   return $menus;
