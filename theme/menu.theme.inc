@@ -153,10 +153,16 @@ function wetkit_menu_menu_link_menu_block_minipanel($variables) {
  *   An array of variables to pass to the theme template.
  */
 function wetkit_menu_sidebar($variables) {
+  global $sidebar_last_depth;
+  global $sidebar_last_has_children;
+  global $sidebar_last_needsclosing;
+
   $element = $variables['element'];
   $depth = $element['#original_link']['depth'];
   $has_children = $element['#original_link']['has_children'];
   $has_nolink = (in_array($element['#href'], array('<nolink>')) ? '<a href="#">' . $element['#title'] . '</a>' : l($element['#title'], $element['#href'], $element['#localized_options']));
+  $max_depth = _menu_depth($element['#below']);
+  $tag = '';
 
   // Recursion.
   $sub_menu = '';
@@ -164,44 +170,73 @@ function wetkit_menu_sidebar($variables) {
     $sub_menu = drupal_render($element['#below']);
   }
 
+  if (!isset($sidebar_last_depth) && $depth == 2 && !$has_children) {
+    $tag = '<div><ul>';
+    $sidebar_last_needsclosing = TRUE;
+  }
+  if ($sidebar_last_depth == 2 && $sidebar_last_has_children && $depth == 2 && !$has_children) {
+    $tag = '<div><ul>';
+    $sidebar_last_needsclosing = TRUE;
+  }
+  if ($sidebar_last_depth == 2 && !$sidebar_last_has_children && $depth == 2 && $has_children) {
+    $tag = '</ul></div>';
+    $sidebar_last_needsclosing = FALSE;
+  }
+  if ($sidebar_last_depth > 2 && $depth == 2 && !$has_children) {
+    $tag = '<div><ul>';
+    $sidebar_last_needsclosing = TRUE;
+  }
+  if ($sidebar_last_depth == 2 && !$sidebar_last_has_children && $depth == 1) {
+    $tag = '</ul></div>';
+    $sidebar_last_needsclosing = FALSE;
+  }
+
+  $sidebar_last_depth = $depth;
+  $sidebar_last_has_children = $has_children;
+
   // Depth 1.
   if ($depth == 1) {
-    if ($has_children == 1) {
-      if (isset($element['#below']['#children'])) {
-        $sub_menu = (preg_match('<h4>', $element['#below']['#children']) ? '<div><ul>' . $sub_menu . '</ul></div>' : '<div><ul>' . $sub_menu . '</ul></div>');
+    if ($has_children) {
+      if ($sidebar_last_needsclosing) {
+        $tag = "</ul></div>";
+        $sidebar_last_needsclosing = FALSE;
       }
-      else {
-        $sub_menu = '<div><ul>' . $sub_menu . '</ul></div>';
-      }
-      return '<section><h3 class="top-section">' . $has_nolink . '</h3>' . $sub_menu . '</section>';
+      return '<section><h3 class="top-section">' . $has_nolink . '</h3>' . $sub_menu . $tag . '</section>';
     }
     else {
-      return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
+      return $tag . '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
     }
   }
+
   // Depth 2.
   if ($depth == 2) {
-    if ($has_children == 1) {
-      return '<section><h4>' . $has_nolink . '</h4><ul>' . $sub_menu . '</ul></section>';
+    if ($has_children) {
+      if ($sidebar_last_needsclosing) {
+        $tag = "</ul></div>";
+        $sidebar_last_needsclosing = FALSE;
+      }
+      return $tag . '<section><h4>' . $has_nolink . '</h4><ul>' . $sub_menu . '</ul></section>';
     }
     else {
       $element['#attributes']['class'][] = 'top-level';
-      return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
+      return $tag . '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
     }
   }
+
   // Depth 3.
   if ($depth == 3) {
-    if ($has_children == 1) {
-      return '<li>' . $has_nolink . '</li><ul>' . $sub_menu . '</ul>';
+    if ($has_children) {
+      return  '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>' . $sub_menu;
     }
     else {
       return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
     }
   }
+
   // Depth 4+.
   else {
-    if ($has_children == 1) {
-      return '<ul><li>' . $has_nolink . '<ul>' . $sub_menu . '</ul></li></ul>';
+    if ($has_children) {
+      return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>' . $sub_menu;
     }
     else {
       return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
@@ -357,4 +392,20 @@ function wetkit_menu_menu_tree__main_menu($variables) {
  */
 function wetkit_menu_menu_tree__menu_block($variables) {
   return $variables['tree'];
+}
+
+/**
+ * Custom array_depth implementation.
+ */
+function _menu_depth(array $array) {
+  $max_depth = 1;
+  foreach ($array as $value) {
+      if (isset($value['#below'])) {
+        $depth = _menu_depth($value['#below']) + 1;
+        if ($depth > $max_depth) {
+          $max_depth = $depth;
+       }
+    }
+  }
+  return $max_depth;
 }
