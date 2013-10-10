@@ -193,8 +193,13 @@ function wetkit_menu_sidebar($variables) {
     $tag = '</ul></div>';
     $needs_closing = FALSE;
   }
+
   $sidebar_last_depth = $depth;
   $sidebar_last_has_children = $has_children;
+
+  if ($depth == 1) {
+    $sidebar_last_depth = NULL;
+  }
 
   // Depth 1.
   if ($depth == 1) {
