@@ -155,7 +155,7 @@ function wetkit_menu_menu_link_menu_block_minipanel($variables) {
 function wetkit_menu_sidebar($variables) {
   global $sidebar_last_depth;
   global $sidebar_last_has_children;
-  global $sidebar_last_needsclosing;
+  global $needs_closing;
 
   $element = $variables['element'];
   $depth = $element['#original_link']['depth'];
@@ -170,36 +170,38 @@ function wetkit_menu_sidebar($variables) {
     $sub_menu = drupal_render($element['#below']);
   }
 
+  // We need to do some interesting things to contextually apply certain tags
+  // based on the number and depth of children elements
+  // Remember the logic below is based on recursion from drupal_render.
   if (!isset($sidebar_last_depth) && $depth == 2 && !$has_children) {
     $tag = '<div><ul>';
-    $sidebar_last_needsclosing = TRUE;
+    $needs_closing = TRUE;
   }
   if ($sidebar_last_depth == 2 && $sidebar_last_has_children && $depth == 2 && !$has_children) {
     $tag = '<div><ul>';
-    $sidebar_last_needsclosing = TRUE;
+    $needs_closing = TRUE;
   }
   if ($sidebar_last_depth == 2 && !$sidebar_last_has_children && $depth == 2 && $has_children) {
     $tag = '</ul></div>';
-    $sidebar_last_needsclosing = FALSE;
+    $needs_closing = FALSE;
   }
   if ($sidebar_last_depth > 2 && $depth == 2 && !$has_children) {
     $tag = '<div><ul>';
-    $sidebar_last_needsclosing = TRUE;
+    $needs_closing = TRUE;
   }
   if ($sidebar_last_depth == 2 && !$sidebar_last_has_children && $depth == 1) {
     $tag = '</ul></div>';
-    $sidebar_last_needsclosing = FALSE;
+    $needs_closing = FALSE;
   }
-
   $sidebar_last_depth = $depth;
   $sidebar_last_has_children = $has_children;
 
   // Depth 1.
   if ($depth == 1) {
     if ($has_children) {
-      if ($sidebar_last_needsclosing) {
+      if ($needs_closing) {
         $tag = "</ul></div>";
-        $sidebar_last_needsclosing = FALSE;
+        $needs_closing = FALSE;
       }
       return '<section><h3 class="top-section">' . $has_nolink . '</h3>' . $sub_menu . $tag . '</section>';
     }
@@ -211,9 +213,9 @@ function wetkit_menu_sidebar($variables) {
   // Depth 2.
   if ($depth == 2) {
     if ($has_children) {
-      if ($sidebar_last_needsclosing) {
+      if ($needs_closing) {
         $tag = "</ul></div>";
-        $sidebar_last_needsclosing = FALSE;
+        $needs_closing = FALSE;
       }
       return $tag . '<section><h4>' . $has_nolink . '</h4><ul>' . $sub_menu . '</ul></section>';
     }
