@@ -11,7 +11,7 @@
 function wetkit_menu_cohen_panels_layouts() {
   $items['cohen'] = array(
     'title' => t('Cohen'),
-    'category' => t('WetKit Menu'),
+    'category' => t('Layouts Menu'),
     'icon' => 'cohen.png',
     'theme' => 'cohen',
     'admin css' => 'cohen.admin.css',
