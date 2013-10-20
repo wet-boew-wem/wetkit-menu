@@ -340,11 +340,20 @@ function wetkit_menu_menu_link_menu_block_mid_footer($variables) {
   $has_children = $element['#original_link']['has_children'];
 
   // Custom Logic Based on Theme Selection (Internet, Intranet or Base).
-  if (variable_get('wetkit_wetboew_theme', 0) == 2) {
+  if (variable_get('wetkit_wetboew_theme', 0) == 1) {
+    $theme_prefix = 'gcwu';
+  }
+  elseif (variable_get('wetkit_wetboew_theme', 0) == 2) {
+    $theme_prefix = 'gcwu';
+  }
+  elseif (variable_get('wetkit_wetboew_theme', 0) == 3) {
     $theme_prefix = 'base';
   }
+  elseif (variable_get('wetkit_wetboew_theme', 0) == 4) {
+    $theme_prefix = 'ogpl';
+  }
   else {
-    $theme_prefix = 'gcwu';
+    $theme_prefix = 'wet';
   }
 
   if ($element['#below']) {
