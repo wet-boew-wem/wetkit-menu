@@ -233,7 +233,7 @@ function wetkit_menu_sidebar($variables) {
   // Depth 3.
   if ($depth == 3) {
     if ($has_children) {
-      return  '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>' . $sub_menu;
+      return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>' . $sub_menu;
     }
     else {
       return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
@@ -416,11 +416,11 @@ function wetkit_menu_menu_tree__menu_block($variables) {
 function _menu_depth(array $array) {
   $max_depth = 1;
   foreach ($array as $value) {
-      if (isset($value['#below'])) {
-        $depth = _menu_depth($value['#below']) + 1;
-        if ($depth > $max_depth) {
-          $max_depth = $depth;
-       }
+    if (isset($value['#below'])) {
+      $depth = _menu_depth($value['#below']) + 1;
+      if ($depth > $max_depth) {
+        $max_depth = $depth;
+      }
     }
   }
   return $max_depth;

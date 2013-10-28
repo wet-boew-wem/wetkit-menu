@@ -398,13 +398,6 @@ function wetkit_menu_prepare_links($links) {
 function wetkit_menu__preprocess_link($link) {
   $matches = array();
 
-  // TODO: Currently this is to global and affects images etc.
-  //if (substr($link['path'], 0, 7) == 'http://' || substr($link['path'], 0, 8) == 'https://') {
-  //  if (!empty($link['options']['attributes'])) {
-  //    $link['options']['attributes']['rel'] = 'external';
-  //  }
-  //}
-
   if (!empty($link['options']['minipanel'])) {
     $prefix = '';
     if (empty($link['options']['attributes'])) {
