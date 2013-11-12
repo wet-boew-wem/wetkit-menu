@@ -233,7 +233,7 @@ function wetkit_menu_sidebar($variables) {
   // Depth 3.
   if ($depth == 3) {
     if ($has_children) {
-      return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>' . $sub_menu;
+      return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '<ul>' . $sub_menu . '</ul></li>';
     }
     else {
       return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
@@ -272,7 +272,7 @@ function wetkit_menu_menu_link_menu_block_sidebar($variables) {
   // Depth 1.
   if ($depth == 1) {
     if ($has_children == 1) {
-      $sub_menu = (preg_match('<h4>', $element['#below']['#children']) ? '<section><ul>' . $sub_menu . '</ul></section>' : '<div><ul>' . $sub_menu . '</ul></div>');
+      $sub_menu = (preg_match('<h4>', $element['#below']['#children']) ? '<section>' . $sub_menu . '</section>' : '<div><ul>' . $sub_menu . '</ul></div>');
       return '<section><h3 class="top-section">' . $has_nolink . '</h3>' . $sub_menu . '</section>';
     }
     else {
@@ -289,7 +289,16 @@ function wetkit_menu_menu_link_menu_block_sidebar($variables) {
       return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
     }
   }
-  // Depth 3+.
+  // Depth 3.
+  if ($depth == 3) {
+    if ($has_children) {
+      return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '<ul>' . $sub_menu . '</ul></li>';
+    }
+    else {
+      return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
+    }
+  }
+  // Depth 4+ (stops outputting submenus after depth 4).
   else {
     return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
   }

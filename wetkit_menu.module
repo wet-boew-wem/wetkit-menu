@@ -93,7 +93,7 @@ function wetkit_menu_theme_registry_alter(&$theme_registry) {
     $theme_registry['menu_link__menu_block']['render element'] = 'element';
     $theme_registry['menu_link__menu_block']['theme path'] = drupal_get_path('module', 'wetkit_menu');
     $theme_registry['menu_link__menu_block']['file'] = drupal_get_path('module', 'wetkit_menu') . '/theme/menu.theme.inc';
-    $theme_registry['menu_link__menu_block']['function'] = 'wetkit_menu_menu_link_menu_block_sidebar';
+    $theme_registry['menu_link__menu_block']['function'] = 'wetkit_menu_sidebar';
     $theme_registry['menu_link__menu_block']['type'] = 'theme_engine';
     $theme_registry['menu_link__menu_block']['final'] = TRUE;
 
