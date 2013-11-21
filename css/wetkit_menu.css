@@ -2,6 +2,5 @@
 /** @file Custom SCSS for the WetKit Menu module. */
 .mb-menu li h4 a { text-decoration: none !important; }
 .mb-menu li h4 a:hover { text-decoration: underline !important; }
-.mb-menu li a { font-weight: normal !important; }
 .mb-menu ul li.top-level a { text-decoration: none !important; }
 .mb-menu ul li.top-level a:hover { text-decoration: underline !important; }
