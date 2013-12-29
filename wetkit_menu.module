@@ -423,7 +423,16 @@ function wetkit_menu__preprocess_link($link) {
     }
   }
   $registry = theme_get_registry();
-  return $registry['link']['old function']($link);
+  if (isset($registry['link']['old function'])) {
+    return $registry['link']['old function']($link);
+  }
+  // compatibility with Theme Developer -- see https://drupal.org/node/1992006
+  elseif (isset($registry['link']['original']['old function'])) {
+    return $registry['link']['original']['old function']($link);
+  }
+  else {
+    return l($link['text'],$link['path'],$link['options']);
+  }
 }
 
 /**
