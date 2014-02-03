@@ -208,8 +208,8 @@ function wetkit_menu_sidebar($variables) {
         $tag = "</ul></div>";
         $needs_closing = FALSE;
       }
-      return '<section><h3 class="top-section">' . $has_nolink . '</h3>' . $sub_menu . $tag . '</section>';
-    }
+      $element['#attributes']['class'][] = 'top-section';
+      return '<section><h3' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</h3>' . $sub_menu . $tag . '</section>';    }
     else {
       return $tag . '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
     }
@@ -273,7 +273,8 @@ function wetkit_menu_menu_link_menu_block_sidebar($variables) {
   if ($depth == 1) {
     if ($has_children == 1) {
       $sub_menu = (preg_match('<h4>', $element['#below']['#children']) ? '<section>' . $sub_menu . '</section>' : '<div><ul>' . $sub_menu . '</ul></div>');
-      return '<section><h3 class="top-section">' . $has_nolink . '</h3>' . $sub_menu . '</section>';
+      $element['#attributes']['class'][] = 'top-section';
+      return '<section><h3' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</h3>' . $sub_menu . $tag . '</section>';
     }
     else {
       return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
