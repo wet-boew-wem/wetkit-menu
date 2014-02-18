@@ -211,7 +211,7 @@ function wetkit_menu_get_wet_path() {
         cache_set($cid, $wetkit_path);
       }
       else {
-        watchdog('wetkit_menu', 'WetKit Menu module is enabled, but the WET library has not been downloaded. This module will not work without WET! Please see README.txt for instructions on how to download WET.');
+        watchdog('wetkit_menu', 'WetKit Menu module is enabled, but the WxT library has not been downloaded.');
       }
     }
   }
@@ -226,7 +226,7 @@ function wetkit_menu_get_wet_path() {
 function wetkit_menu_help($path, $arg) {
   switch ($path) {
     case 'admin/config/user-interface/wetkit_menu':
-      return '<p>' . t('The WetKit Menu module integrates the very popular WET tooltip library into Drupal. Visit the <a href="!reference_url">WET reference</a> to learn about the various configuration options.', array('!reference_url' => 'https://github.com/wet-boew/wet-boew-drupal.git')) . '</p>';
+      return '<p>' . t('The WetKit Menu module integrates the Drupal menu system with the WxT Framework. Visit the <a href="!reference_url">WET-BOEW</a> website to learn about Web Experience Toolkit.', array('!reference_url' => 'https://github.com/wet-boew/wet-boew.git')) . '</p>';
   }
 }
 
@@ -362,7 +362,8 @@ function wetkit_menu_form_menu_edit_menu_alter(&$form, &$form_state) {
  * Submission callback for the menu_edit_menu form.
  */
 function wetkit_menu_form_menu_edit_menu_submit($form, &$form_state) {
-  $var_name = 'wetkit_menu_' . $form_state['values']['menu_name'] . '_enabled';
+  $menu_name = $form['#insert'] ? 'menu-' . $form_state['values']['menu_name'] : $form_state['values']['menu_name'];
+  $var_name = 'wetkit_menu_' . $menu_name . '_enabled';
   if (!empty($form_state['values']['wetkit_menu'])) {
     variable_set($var_name, TRUE);
   }

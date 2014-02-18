@@ -87,10 +87,10 @@ function wetkit_menu_requirements($phase) {
     // If the file was not found, leave a message for the user.
     if (empty($wetkit_path)) {
       $requirements['wetkit_menu'] = array(
-        'description' => $t('The module is enabled but the WET library has not been downloaded. This module will not work without qTip! Please see README.txt in the wetkit_menu directory for instructions on how to download WET, or use <a href="http://drupal.org/project/drush">Drush</a> to download it via the following command:<br /><pre>drush download-qtip</pre>'),
+        'description' => $t('The module is enabled but the WxT library has not been downloaded.'),
         'severity' => REQUIREMENT_ERROR,
         'title' => $t('WetKit Menus'),
-        'value' => $t('WET library not found'),
+        'value' => $t('WxT library not found'),
       );
     }
 
