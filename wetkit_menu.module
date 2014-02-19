@@ -53,6 +53,20 @@ function wetkit_menu_preprocess_menu_block_wrapper(&$variables) {
 }
 
 /**
+ * Implements hook_menu_block_get_theme_overrides().
+ */
+function wetkit_menu_menu_block_get_theme_overrides() {
+  return array(
+    ''  => t('Default'),
+    'menu_link__menu_block__wxt_megamenu' => t('Megamenu'),
+    'menu_link__menu_block__wxt_megamenu_insert' => t('Megamenu Insert'),
+    'menu_link__menu_block__wxt_megamenu_focus' => t('Megamenu Focus'),
+    'menu_link__menu_block__wxt_mid_footer' => t('Mid Footer'),
+    'menu_link__menu_block__wxt_sidebar' => t('Sidebar'),
+  );
+}
+
+/**
  * Implements hook_theme().
  */
 function wetkit_menu_theme($existing, $type, $theme, $path) {
