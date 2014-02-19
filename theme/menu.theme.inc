@@ -89,7 +89,7 @@ function wetkit_menu_menu_link_menu_block_megamenu($variables) {
  * @param array $variables
  *   An array of variables to pass to the theme template.
  */
-function wetkit_menu_menu_link_menu_block_minipanel($variables) {
+function wetkit_menu_menu_link_menu_block_megamenu_insert($variables) {
   $element = $variables['element'];
   $depth = $element['#original_link']['depth'];
   $has_children = $element['#original_link']['has_children'];
@@ -152,171 +152,7 @@ function wetkit_menu_menu_link_menu_block_minipanel($variables) {
  * @param array $variables
  *   An array of variables to pass to the theme template.
  */
-function wetkit_menu_sidebar($variables) {
-  global $sidebar_last_depth;
-  global $sidebar_last_has_children;
-  global $needs_closing;
-  global $initial_depth;
-
-  if (!isset($initial_depth)) {
-    $initial_depth = $variables['element']['#original_link']['depth'] - 1;
-  }
-
-  $element = $variables['element'];
-  $depth = $element['#original_link']['depth'] - $initial_depth;
-  $has_children = $element['#original_link']['has_children'];
-  $has_nolink = (in_array($element['#href'], array('<nolink>')) ? '<a href="#">' . $element['#title'] . '</a>' : l($element['#title'], $element['#href'], $element['#localized_options']));
-  $max_depth = _menu_depth($element['#below']);
-  $tag = '';
-
-  // Recursion.
-  $sub_menu = '';
-  if ($element['#below']) {
-    $sub_menu = drupal_render($element['#below']);
-  }
-
-  // We need to do some interesting things to contextually apply certain tags
-  // based on the number and depth of children elements
-  // Remember the logic below is based on recursion from drupal_render.
-  if (!isset($sidebar_last_depth) && $depth == 2 && !$has_children) {
-    $tag = '<div><ul>';
-    $needs_closing = TRUE;
-  }
-  if ($sidebar_last_depth == 2 && $sidebar_last_has_children && $depth == 2 && !$has_children) {
-    $tag = '<div><ul>';
-    $needs_closing = TRUE;
-  }
-  if ($sidebar_last_depth == 2 && !$sidebar_last_has_children && $depth == 2 && $has_children) {
-    $tag = '</ul></div>';
-    $needs_closing = FALSE;
-  }
-  if ($sidebar_last_depth > 2 && $depth == 2 && !$has_children) {
-    $tag = '<div><ul>';
-    $needs_closing = TRUE;
-  }
-  if ($sidebar_last_depth == 2 && !$sidebar_last_has_children && $depth == 1) {
-    $tag = '</ul></div>';
-    $needs_closing = FALSE;
-  }
-
-  $sidebar_last_depth = $depth;
-  $sidebar_last_has_children = $has_children;
-
-  if ($depth == 1) {
-    $sidebar_last_depth = NULL;
-  }
-
-  // Depth 1.
-  if ($depth == 1) {
-    if ($has_children) {
-      if ($needs_closing) {
-        $tag = "</ul></div>";
-        $needs_closing = FALSE;
-      }
-      $element['#attributes']['class'][] = 'top-section';
-      return '<section><h3' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</h3>' . $sub_menu . $tag . '</section>';    }
-    else {
-      return $tag . '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
-    }
-  }
-
-  // Depth 2.
-  if ($depth == 2) {
-    if ($has_children) {
-      if ($needs_closing) {
-        $tag = "</ul></div>";
-        $needs_closing = FALSE;
-      }
-      return $tag . '<section><h4>' . $has_nolink . '</h4><ul>' . $sub_menu . '</ul></section>';
-    }
-    else {
-      $element['#attributes']['class'][] = 'top-level';
-      return $tag . '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
-    }
-  }
-
-  // Depth 3.
-  if ($depth == 3) {
-    if ($has_children) {
-      return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '<ul>' . $sub_menu . '</ul></li>';
-    }
-    else {
-      return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
-    }
-  }
-
-  // Depth 4+.
-  else {
-    if ($has_children) {
-      return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>' . $sub_menu;
-    }
-    else {
-      return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
-    }
-  }
-}
-
-/**
- * Override or insert variables into the menu link templates.
- *
- * @param array $variables
- *   An array of variables to pass to the theme template.
- */
-function wetkit_menu_menu_link_menu_block_sidebar($variables) {
-  $element = $variables['element'];
-  $depth = $element['#original_link']['depth'];
-  $has_children = $element['#original_link']['has_children'];
-  $has_nolink = (in_array($element['#href'], array('<nolink>')) ? $element['#title'] : l($element['#title'], $element['#href'], $element['#localized_options']));
-
-  // Recursion.
-  $sub_menu = '';
-  if ($element['#below']) {
-    $sub_menu = drupal_render($element['#below']);
-  }
-
-  // Depth 1.
-  if ($depth == 1) {
-    if ($has_children == 1) {
-      $sub_menu = (preg_match('<h4>', $element['#below']['#children']) ? '<section>' . $sub_menu . '</section>' : '<div><ul>' . $sub_menu . '</ul></div>');
-      $element['#attributes']['class'][] = 'top-section';
-      return '<section><h3' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</h3>' . $sub_menu . $tag . '</section>';
-    }
-    else {
-      return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
-    }
-  }
-  // Depth 2.
-  if ($depth == 2) {
-    if ($has_children == 1) {
-      return '<h4>' . $has_nolink . '</h4><ul>' . $sub_menu . '</ul>';
-    }
-    else {
-      $element['#attributes']['class'][] = 'top-level';
-      return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
-    }
-  }
-  // Depth 3.
-  if ($depth == 3) {
-    if ($has_children) {
-      return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '<ul>' . $sub_menu . '</ul></li>';
-    }
-    else {
-      return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
-    }
-  }
-  // Depth 4+ (stops outputting submenus after depth 4).
-  else {
-    return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
-  }
-}
-
-/**
- * Override or insert variables into the menu link templates.
- *
- * @param array $variables
- *   An array of variables to pass to the theme template.
- */
-function wetkit_menu_menu_link_menu_block_minipanel_focus($variables) {
+function wetkit_menu_menu_link_menu_block_megamenu_focus($variables) {
   $element = $variables['element'];
   $depth = $element['#original_link']['depth'];
   $has_children = $element['#original_link']['has_children'];
@@ -402,6 +238,117 @@ function wetkit_menu_menu_link_menu_block_mid_footer($variables) {
       $output = l($element['#title'], $element['#href'], $element['#localized_options']);
     }
     return '<li>' . $output . $sub_menu . "</li>\n";
+  }
+}
+
+/**
+ * Override or insert variables into the menu link templates.
+ *
+ * @param array $variables
+ *   An array of variables to pass to the theme template.
+ */
+function wetkit_menu_menu_link_menu_block_sidebar($variables) {
+  global $sidebar_last_depth;
+  global $sidebar_last_has_children;
+  global $needs_closing;
+  global $initial_depth;
+
+  if (!isset($initial_depth)) {
+    $initial_depth = $variables['element']['#original_link']['depth'] - 1;
+  }
+
+  $element = $variables['element'];
+  $depth = $element['#original_link']['depth'] - $initial_depth;
+  $has_children = $element['#original_link']['has_children'];
+  $has_nolink = (in_array($element['#href'], array('<nolink>')) ? '<a href="#">' . $element['#title'] . '</a>' : l($element['#title'], $element['#href'], $element['#localized_options']));
+  $max_depth = _menu_depth($element['#below']);
+  $tag = '';
+
+  // Recursion.
+  $sub_menu = '';
+  if ($element['#below']) {
+    $sub_menu = drupal_render($element['#below']);
+  }
+
+  // We need to do some interesting things to contextually apply certain tags
+  // based on the number and depth of children elements
+  // Remember the logic below is based on recursion from drupal_render.
+  if (!isset($sidebar_last_depth) && $depth == 2 && !$has_children) {
+    $tag = '<div><ul>';
+    $needs_closing = TRUE;
+  }
+  if ($sidebar_last_depth == 2 && $sidebar_last_has_children && $depth == 2 && !$has_children) {
+    $tag = '<div><ul>';
+    $needs_closing = TRUE;
+  }
+  if ($sidebar_last_depth == 2 && !$sidebar_last_has_children && $depth == 2 && $has_children) {
+    $tag = '</ul></div>';
+    $needs_closing = FALSE;
+  }
+  if ($sidebar_last_depth > 2 && $depth == 2 && !$has_children) {
+    $tag = '<div><ul>';
+    $needs_closing = TRUE;
+  }
+  if ($sidebar_last_depth == 2 && !$sidebar_last_has_children && $depth == 1) {
+    $tag = '</ul></div>';
+    $needs_closing = FALSE;
+  }
+
+  $sidebar_last_depth = $depth;
+  $sidebar_last_has_children = $has_children;
+
+  if ($depth == 1) {
+    $sidebar_last_depth = NULL;
+    $initial_depth = NULL;
+  }
+
+  // Depth 1.
+  if ($depth == 1) {
+    if ($has_children) {
+      if ($needs_closing) {
+        $tag = "</ul></div>";
+        $needs_closing = FALSE;
+      }
+      $element['#attributes']['class'][] = 'top-section';
+      return '<section><h3' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</h3>' . $sub_menu . $tag . '</section>';    }
+    else {
+      return $tag . '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
+    }
+  }
+
+  // Depth 2.
+  if ($depth == 2) {
+    if ($has_children) {
+      if ($needs_closing) {
+        $tag = "</ul></div>";
+        $needs_closing = FALSE;
+      }
+      return $tag . '<section><h4>' . $has_nolink . '</h4><ul>' . $sub_menu . '</ul></section>';
+    }
+    else {
+      $element['#attributes']['class'][] = 'top-level';
+      return $tag . '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
+    }
+  }
+
+  // Depth 3.
+  if ($depth == 3) {
+    if ($has_children) {
+      return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '<ul>' . $sub_menu . '</ul></li>';
+    }
+    else {
+      return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
+    }
+  }
+
+  // Depth 4+.
+  else {
+    if ($has_children) {
+      return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>' . $sub_menu;
+    }
+    else {
+      return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
+    }
   }
 }
 
