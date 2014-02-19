@@ -156,9 +156,14 @@ function wetkit_menu_sidebar($variables) {
   global $sidebar_last_depth;
   global $sidebar_last_has_children;
   global $needs_closing;
+  global $initial_depth;
+
+  if (!isset($initial_depth)) {
+    $initial_depth = $variables['element']['#original_link']['depth'] - 1;
+  }
 
   $element = $variables['element'];
-  $depth = $element['#original_link']['depth'];
+  $depth = $element['#original_link']['depth'] - $initial_depth;
   $has_children = $element['#original_link']['has_children'];
   $has_nolink = (in_array($element['#href'], array('<nolink>')) ? '<a href="#">' . $element['#title'] . '</a>' : l($element['#title'], $element['#href'], $element['#localized_options']));
   $max_depth = _menu_depth($element['#below']);
