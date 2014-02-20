@@ -5,11 +5,11 @@
  */
 
 $plugin = array(
-  'title' => t('WetKit MegaMenu Helper'),
-  'description' => t('Provide support for megamenus and minipanels interaction.'),
+  'title' => t('WetKit Menu'),
+  'description' => t('Provide advanced support for menus / minipanels integration with WxT markup.'),
   'render pane' => 'wetkit_menu_wetkit_menu_settings_render_pane',
   'pane settings form' => 'wetkit_menu_wetkit_menu_settings_style_settings_form',
-  'weight' => -10,
+  'weight' => 0,
 );
 
 /**
@@ -23,40 +23,7 @@ function theme_wetkit_menu_wetkit_menu_settings_render_pane($vars) {
   $settings = $vars['settings'];
   $element = $content->content['#content'];
 
-  // Shows just the marked sub-menu items and removes all others.
-  if (isset($settings['wetkit_menu_settings_show_marked_items']) && ($settings['wetkit_menu_settings_show_marked_items'] == 1)) {
-    $children = array_intersect_key($element, array_flip(element_children($element)));
-    foreach ($content->content['#config']['show_menu_items'] as &$menu_item) {
-      list($conf['show_menu_name'], $conf['show_item_mlid']) = explode(':', $menu_item);
-      $menu_item = $conf['show_item_mlid'];
-    }
-    foreach ($children as $element_key => $element_value) {
-      $content->content['#content'][$element_key]['#attributes']['class'][] = (isset($settings['wetkit_menu_settings_custom_css'])) ? $settings['wetkit_menu_settings_custom_css'] : '';
-      $mlid_matches = FALSE;
-      foreach ($content->content['#config']['show_menu_items'] as &$menu_item) {
-        if (module_exists('i18n')) {
-          $menu_translated = menu_link_load($menu_item);
-          if (!empty($menu_translated['i18n_tsid'])) {
-            if ($translation_set = i18n_translation_set_load($menu_translated['i18n_tsid'])) {
-              $menu_translations = $translation_set->get_translations();
-              global $language;
-              if ($language->language == 'fr') {
-                $menu_item = $menu_translations['fr']['mlid'];
-              }
-            }
-          }
-        }
-        if ($element_value['#original_link']['mlid'] == $menu_item) {
-          $mlid_matches = TRUE;
-        }
-      }
-      if (!$mlid_matches) {
-        unset($content->content['#content'][$element_key]);
-      }
-    }
-  }
-
-  // Strips all the menus with sub-menu items.
+  // Strips all the sub-menus.
   if (isset($settings['wetkit_menu_settings_strip_sub_items']) && ($settings['wetkit_menu_settings_strip_sub_items'] == 1)) {
     $children = array_intersect_key($element, array_flip(element_children($element)));
     foreach ($children as $element_key => $element_value) {
@@ -67,16 +34,16 @@ function theme_wetkit_menu_wetkit_menu_settings_render_pane($vars) {
     }
   }
 
-  // Custom CSS applied to each Menu Item.
+  // Custom CSS applied to each individual menu item.
   if (isset($settings['wetkit_menu_settings_strip_sub_items']) && ($settings['wetkit_menu_settings_strip_sub_items'] == 0) &&
-      isset($settings['wetkit_menu_settings_show_marked_items']) && ($settings['wetkit_menu_settings_show_marked_items'] == 0) &&
-      isset($settings['wetkit_menu_settings_custom_css']) && ($settings['wetkit_menu_settings_custom_css'] == 'top-level')) {
+      isset($settings['wetkit_menu_settings_custom_css']) && ($settings['wetkit_menu_settings_custom_css'] != '')) {
     $children = array_intersect_key($element, array_flip(element_children($element)));
     foreach ($children as $element_key => $element_value) {
       $sub_children = array_intersect_key($content->content['#content'][$element_key]['#below'], array_flip(element_children($content->content['#content'][$element_key]['#below'])));
       foreach ($sub_children as $menu_item_key => $menu_item_value) {
         $content->content['#content'][$element_key]['#below'][$menu_item_key]['#attributes']['class'][] = (isset($settings['wetkit_menu_settings_custom_css'])) ? $settings['wetkit_menu_settings_custom_css'] : '';
       }
+      $content->content['#content'][$element_key]['#attributes']['class'][] = (isset($settings['wetkit_menu_settings_custom_css'])) ? $settings['wetkit_menu_settings_custom_css'] : '';
     }
   }
 
@@ -122,15 +89,6 @@ function theme_wetkit_menu_wetkit_menu_settings_render_pane($vars) {
  */
 function wetkit_menu_wetkit_menu_settings_style_settings_form($style_settings) {
 
-  $form['wetkit_menu_settings_show_marked_items'] = array(
-    '#type' => 'select',
-    '#title' => t('Show only the the marked menu items?'),
-    '#options' => array(
-      '0' => t('No'),
-      '1' => t('Yes'),
-    ),
-    '#default_value' => (isset($style_settings['wetkit_menu_settings_show_marked_items'])) ? $style_settings['wetkit_menu_settings_show_marked_items'] : '',
-  );
   $form['wetkit_menu_settings_strip_sub_items'] = array(
     '#type' => 'select',
     '#title' => t('Strip all of the sub menu items?'),
@@ -142,7 +100,7 @@ function wetkit_menu_wetkit_menu_settings_style_settings_form($style_settings) {
   );
   $form['wetkit_menu_settings_wrap_pane'] = array(
     '#type' => 'select',
-    '#title' => t('Wrap Pane in the following tags?'),
+    '#title' => t('Wrap the Panel Pane with the following tag'),
     '#options' => array(
       '0' => t('- None -'),
       '1' => t('<section>'),
@@ -153,7 +111,7 @@ function wetkit_menu_wetkit_menu_settings_style_settings_form($style_settings) {
   );
   $form['wetkit_menu_settings_wrap_menu_items'] = array(
     '#type' => 'select',
-    '#title' => t('Wrap menu links in the following tags?'),
+    '#title' => t('Group the menu items with the following tag'),
     '#options' => array(
       '0' => t('- None -'),
       '1' => t('<ul>'),
@@ -162,7 +120,7 @@ function wetkit_menu_wetkit_menu_settings_style_settings_form($style_settings) {
   );
   $form['wetkit_menu_settings_custom_css'] = array(
     '#type' => 'textfield',
-    '#title' => t('Custom CSS to be applied to each menu item.'),
+    '#title' => t('CSS to be inserted into individual menu items (max depth of 2)'),
     '#default_value' => (isset($style_settings['wetkit_menu_settings_custom_css'])) ? $style_settings['wetkit_menu_settings_custom_css'] : '',
     '#size' => 60,
     '#maxlength' => 128,
