@@ -431,17 +431,24 @@ function wetkit_menu_default_panels_mini() {
  * Custom function for retrieving mlids by link path.
  */
 function _wetkit_menu_get_mlid($source_id) {
-  if (db_table_exists('migrate_map_wetkitmigratemegamenulinks')) {
-    $menu_link = db_select('migrate_map_wetkitmigratemegamenulinks')
+
+  // Avoid checking if table exists multiple times.
+  $table_exists = &drupal_static(__FUNCTION__ . '_table_exists');
+  if (!isset($table_exists)) {
+    $table_exists = db_table_exists('migrate_map_wetkitmigratemegamenulinks');
+  }
+  if (!$table_exists) {
+    return FALSE;
+  }
+  // Statically cache results of db queries.
+  $menu_links = &drupal_static(__FUNCTION__ . '_menu_links', array());
+  if (!isset($menu_links[$source_id])) {
+    $menu_links[$source_id] = db_select('migrate_map_wetkitmigratemegamenulinks')
         ->fields('migrate_map_wetkitmigratemegamenulinks')
         ->condition('sourceid1', $source_id)
         ->execute()->fetch();
-
-    if (isset($menu_link->destid1)) {
-      return $menu_link->destid1;
-    }
   }
-  else {
-    return FALSE;
+  if (isset($menu_links[$source_id]->destid1)) {
+    return $menu_links[$source_id]->destid1;
   }
 }

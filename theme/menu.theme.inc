@@ -261,12 +261,14 @@ function wetkit_menu_menu_link_menu_block_sidebar($variables) {
   $depth = $element['#original_link']['depth'] - $initial_depth;
   $has_children = $element['#original_link']['has_children'];
   $has_nolink = (in_array($element['#href'], array('<nolink>')) ? '<a href="#">' . $element['#title'] . '</a>' : l($element['#title'], $element['#href'], $element['#localized_options']));
-  $max_depth = _menu_depth($element['#below']);
+  if (isset($element['#below']) && is_array($element['#below'])) {
+    $max_depth = _menu_depth($element['#below']);
+  }
   $tag = '';
 
   // Recursion.
   $sub_menu = '';
-  if ($element['#below']) {
+  if (isset($element['#below']) && is_array($element['#below'])) {
     $sub_menu = drupal_render($element['#below']);
   }
 
@@ -378,7 +380,7 @@ function wetkit_menu_menu_tree__menu_block($variables) {
 function _menu_depth(array $array) {
   $max_depth = 1;
   foreach ($array as $value) {
-    if (isset($value['#below'])) {
+    if (isset($value['#below']) && is_array($value['#below'])) {
       $depth = _menu_depth($value['#below']) + 1;
       if ($depth > $max_depth) {
         $max_depth = $depth;
