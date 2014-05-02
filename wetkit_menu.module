@@ -63,6 +63,7 @@ function wetkit_menu_menu_block_get_theme_overrides() {
     'menu_link__menu_block__wxt_megamenu_focus' => t('Megamenu Focus'),
     'menu_link__menu_block__wxt_mid_footer' => t('Mid Footer'),
     'menu_link__menu_block__wxt_sidebar' => t('Sidebar'),
+    'menu_link__menu_block__wxt_sidebar_right' => t('Sidebar Right'),
   );
 }
 
@@ -87,6 +88,11 @@ function wetkit_menu_theme($existing, $type, $theme, $path) {
       'template' => 'megamenu_nav',
     ),
     'wetkit_menu_panels_pane_sidebar' => array(
+      'render element' => 'element',
+      'path' => drupal_get_path('module', 'wetkit_menu') . '/templates/panes',
+      'template' => 'megamenu_sidebar',
+    ),
+    'wetkit_menu_panels_pane_sidebar_right' => array(
       'render element' => 'element',
       'path' => drupal_get_path('module', 'wetkit_menu') . '/templates/panes',
       'template' => 'megamenu_sidebar',
@@ -143,6 +149,14 @@ function wetkit_menu_theme_registry_alter(&$theme_registry) {
     $theme_registry['menu_link__menu_block__wxt_sidebar']['function'] = 'wetkit_menu_menu_link_menu_block_sidebar';
     $theme_registry['menu_link__menu_block__wxt_sidebar']['type'] = 'theme_engine';
     $theme_registry['menu_link__menu_block__wxt_sidebar']['final'] = TRUE;
+
+    $theme_registry['menu_link__menu_block__wxt_sidebar_right']['base hook'] = 'menu_link';
+    $theme_registry['menu_link__menu_block__wxt_sidebar_right']['render element'] = 'element';
+    $theme_registry['menu_link__menu_block__wxt_sidebar_right']['theme path'] = drupal_get_path('module', 'wetkit_menu');
+    $theme_registry['menu_link__menu_block__wxt_sidebar_right']['file'] = drupal_get_path('module', 'wetkit_menu') . '/theme/menu.theme.inc';
+    $theme_registry['menu_link__menu_block__wxt_sidebar_right']['function'] = 'wetkit_menu_menu_link_menu_block_sidebar_right';
+    $theme_registry['menu_link__menu_block__wxt_sidebar_right']['type'] = 'theme_engine';
+    $theme_registry['menu_link__menu_block__wxt_sidebar_right']['final'] = TRUE;
 
     // Defaults for Menu Links.
     $theme_registry['menu_link__menu_block__main_menu']['base hook'] = 'menu_link';

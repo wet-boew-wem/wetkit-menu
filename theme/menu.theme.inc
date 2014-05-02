@@ -355,6 +355,25 @@ function wetkit_menu_menu_link_menu_block_sidebar($variables) {
 }
 
 /**
+ * Override or insert variables into the menu link templates.
+ *
+ * @param array $variables
+ *   An array of variables to pass to the theme template.
+ */
+function wetkit_menu_menu_link_menu_block_sidebar_right($variables) {
+  $element = $variables['element'];
+  $sub_menu = '';
+  if (isset($element['#below']) && is_array($element['#below'])) {
+    $sub_menu = drupal_render($element['#below']);
+  }
+  $output = '';
+
+  $output .= '<li' . drupal_attributes($element['#attributes']) . '>' . l($element['#title'], $element['#href'], $element['#localized_options']) . $sub_menu . "</li>\n";
+
+  return $output;
+}
+
+/**
  * Override or insert variables into the menu tree templates.
  *
  * @param array $variables
