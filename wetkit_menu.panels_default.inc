@@ -401,13 +401,15 @@ function wetkit_menu_default_panels_mini() {
       'sort' => 0,
       'override_title' => 1,
       'override_title_text' => '',
+      'title_embed' => 0,
+      'theme' => '',
     );
     $pane->cache = array();
     $pane->style = array(
       'settings' => array(
         'wetkit_menu_settings_strip_sub_items' => '0',
         'wetkit_menu_settings_wrap_pane' => '0',
-        'wetkit_menu_settings_wrap_menu_items' => '1',
+        'wetkit_menu_settings_wrap_menu_items' => '0',
         'wetkit_menu_settings_custom_css' => '',
       ),
       'style' => 'wetkit_menu_settings',
