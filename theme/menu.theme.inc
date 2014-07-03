@@ -191,18 +191,29 @@ function wetkit_menu_menu_link_menu_block_mid_footer($variables) {
   $has_children = $element['#original_link']['has_children'];
 
   // Custom Logic Based on Theme Selection (Internet, Intranet or Base).
-  if (variable_get('wetkit_wetboew_theme', 0) == 1) {
+  $wxt_active = variable_get('wetkit_wetboew_theme', 'wet-boew');
+
+  // Internet Theme.
+  if ($wxt_active == 'wet-boew-gcwu-fegc') {
     $theme_prefix = 'gcwu';
   }
-  elseif (variable_get('wetkit_wetboew_theme', 0) == 2) {
+  // Intranet Theme.
+  elseif ($wxt_active == 'wet-boew-gc-intranet') {
     $theme_prefix = 'gcwu';
   }
-  elseif (variable_get('wetkit_wetboew_theme', 0) == 3) {
+  // Base Theme.
+  elseif ($wxt_active == 'wet-boew-base') {
     $theme_prefix = 'base';
   }
-  elseif (variable_get('wetkit_wetboew_theme', 0) == 4) {
+  // OGPL Theme.
+  elseif ($wxt_active == 'wet-boew-ogpl') {
     $theme_prefix = 'ogpl';
   }
+  // Canada Theme.
+  elseif ($wxt_active == 'wet-boew-gcweb') {
+    $theme_prefix = 'gcweb';
+  }
+  // WET Theme.
   else {
     $theme_prefix = 'wet';
   }
@@ -248,110 +259,45 @@ function wetkit_menu_menu_link_menu_block_mid_footer($variables) {
  *   An array of variables to pass to the theme template.
  */
 function wetkit_menu_menu_link_menu_block_sidebar($variables) {
-  global $sidebar_last_depth;
-  global $sidebar_last_has_children;
-  global $needs_closing;
-  global $initial_depth;
-
-  if (!isset($initial_depth)) {
-    $initial_depth = $variables['element']['#original_link']['depth'] - 1;
-  }
-
   $element = $variables['element'];
-  $depth = $element['#original_link']['depth'] - $initial_depth;
-  $has_children = $element['#original_link']['has_children'];
-  $has_nolink = (in_array($element['#href'], array('<nolink>')) ? '<a href="#">' . $element['#title'] . '</a>' : l($element['#title'], $element['#href'], $element['#localized_options']));
-  if (isset($element['#below']) && is_array($element['#below'])) {
-    $max_depth = _menu_depth($element['#below']);
-  }
-  $tag = '';
-
-  // Recursion.
   $sub_menu = '';
-  if (isset($element['#below']) && is_array($element['#below'])) {
-    $sub_menu = drupal_render($element['#below']);
-  }
 
-  // We need to do some interesting things to contextually apply certain tags
-  // based on the number and depth of children elements
-  // Remember the logic below is based on recursion from drupal_render.
-  if (!isset($sidebar_last_depth) && $depth == 2 && !$has_children) {
-    $tag = '<div><ul>';
-    $needs_closing = TRUE;
-  }
-  if ($sidebar_last_depth == 2 && $sidebar_last_has_children && $depth == 2 && !$has_children) {
-    $tag = '<div><ul>';
-    $needs_closing = TRUE;
-  }
-  if ($sidebar_last_depth == 2 && !$sidebar_last_has_children && $depth == 2 && $has_children) {
-    $tag = '</ul></div>';
-    $needs_closing = FALSE;
-  }
-  if ($sidebar_last_depth > 2 && $depth == 2 && !$has_children) {
-    $tag = '<div><ul>';
-    $needs_closing = TRUE;
-  }
-  if ($sidebar_last_depth == 2 && !$sidebar_last_has_children && $depth == 1) {
-    $tag = '</ul></div>';
-    $needs_closing = FALSE;
-  }
+  if ($element['#below']) {
+    // Prevent dropdown functions from being added to management menu so it
+    // does not affect the navbar module.
+    if (($element['#original_link']['menu_name'] == 'management') && (module_exists('navbar'))) {
+      $sub_menu = drupal_render($element['#below']);
+    }
+    elseif ((!empty($element['#original_link']['depth'])) && ($element['#original_link']['depth'] == 1)) {
+      // Add our own wrapper.
+      unset($element['#below']['#theme_wrappers']);
+      $sub_menu = '<ul class="list-group menu list-unstyled">' . drupal_render($element['#below']) . '</ul>';
+      // Generate as standard dropdown.
+      //$element['#title'] .= ' <span class="caret"></span>';
+      $element['#attributes']['class'][] = 'dropdown';
+      $element['#localized_options']['html'] = TRUE;
 
-  $sidebar_last_depth = $depth;
-  $sidebar_last_has_children = $has_children;
-
-  if ($depth == 1) {
-    $sidebar_last_depth = NULL;
-    $initial_depth = NULL;
-  }
-
-  // Depth 1.
-  if ($depth == 1) {
-    if ($has_children) {
-      if ($needs_closing) {
-        $tag = "</ul></div>";
-        $needs_closing = FALSE;
-      }
-      $element['#attributes']['class'][] = 'top-section';
-      return '<section><h3' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</h3>' . $sub_menu . $tag . '</section>';    }
-    else {
-      return $tag . '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
+      // Set dropdown trigger element to # to prevent inadvertant page loading
+      // when a submenu link is clicked.
+      $element['#localized_options']['attributes']['data-target'] = '#';
+      $element['#localized_options']['attributes']['class'][] = 'dropdown-toggle';
+      $element['#localized_options']['attributes']['data-toggle'] = 'dropdown';
     }
   }
-
-  // Depth 2.
-  if ($depth == 2) {
-    if ($has_children) {
-      if ($needs_closing) {
-        $tag = "</ul></div>";
-        $needs_closing = FALSE;
-      }
-      return $tag . '<section><h4>' . $has_nolink . '</h4><ul>' . $sub_menu . '</ul></section>';
-    }
-    else {
-      $element['#attributes']['class'][] = 'top-level';
-      return $tag . '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
-    }
+  // On primary navigation menu, class 'active' is not set on active menu item.
+  // @see https://drupal.org/node/1896674
+  if (($element['#href'] == $_GET['q'] || ($element['#href'] == '<front>' && drupal_is_front_page())) && (empty($element['#localized_options']['language']))) {
+    $element['#attributes']['class'][] = 'active';
   }
 
-  // Depth 3.
-  if ($depth == 3) {
-    if ($has_children) {
-      return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '<ul>' . $sub_menu . '</ul></li>';
-    }
-    else {
-      return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
-    }
+  if ($element['#original_link']['depth'] == 1) {
+    $output = '<h3>' . l($element['#title'], $element['#href'], $element['#localized_options']) . '</h3>';
   }
-
-  // Depth 4+.
   else {
-    if ($has_children) {
-      return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>' . $sub_menu;
-    }
-    else {
-      return '<li' . drupal_attributes($element['#attributes']) . '>' . $has_nolink . '</li>';
-    }
+    $element['#localized_options']['attributes']['class'][] = 'list-group-item';
+    $output = l($element['#title'], $element['#href'], $element['#localized_options']);
   }
+  return '<li' . drupal_attributes($element['#attributes']) . '>' . $output . $sub_menu . "</li>\n";
 }
 
 /**

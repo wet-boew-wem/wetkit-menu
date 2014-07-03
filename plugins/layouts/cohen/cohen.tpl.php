@@ -36,24 +36,16 @@ $panel_suffix = isset($panel_suffix) ? $panel_suffix : '';
 <?php endif; ?>
 
 <?php if ($content['cohen_left']): ?>
-<div class="span-2">
     <?php print $content['cohen_left']; ?>
-</div>
 <?php endif; ?>
 <?php if ($content['cohen_middle_left']): ?>
-<div class="span-2">
     <?php print $content['cohen_middle_left']; ?>
-</div>
 <?php endif; ?>
 <?php if ($content['cohen_middle_right']): ?>
-<div class="span-2">
     <?php print $content['cohen_middle_right']; ?>
-</div>
 <?php endif; ?>
 <?php if ($content['cohen_right']): ?>
-<div class="span-2">
     <?php print $content['cohen_right']; ?>
-</div>
 <?php endif; ?>
 <div class="clear"></div>
 
