@@ -406,7 +406,7 @@ function wetkit_menu__preprocess_link($link) {
     $minipanel = wetkit_menu_panels($mlid, $minipanel_name);
     if (!empty($minipanel)) {
       $admin_theme = variable_get('admin_theme');
-      if (path_is_admin(current_path()) && (($admin_theme != 'wetkit_omega') && ($admin_theme != '0'))) {
+      if (path_is_admin(current_path()) && (($admin_theme != 'wetkit_bootstrap') && ($admin_theme != '0'))) {
         return $link['text'];
       }
       else {
