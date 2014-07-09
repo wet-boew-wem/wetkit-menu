@@ -14,7 +14,7 @@ function wetkit_menu_menu_default_menu_custom() {
   $menus['megamenu'] = array(
     'menu_name' => 'megamenu',
     'title' => 'Mega Menu (Insert)',
-    'description' => 'Mega Menu (Insert) Menu.',
+    'description' => 'Mega Menu (Insert).',
     'language' => 'und',
     'i18n_mode' => 5,
   );
