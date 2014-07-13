@@ -29,7 +29,7 @@ function wetkit_menu_menu_default_menu_custom() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Mega Menu (Insert)');
-  t('Mega Menu (Insert) Menu.');
+  t('Mega Menu (Insert).');
   t('Sidebar');
   t('Sidebar Menu.');
 
