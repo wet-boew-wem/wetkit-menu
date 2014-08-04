@@ -57,14 +57,17 @@ function wetkit_menu_requirements($phase) {
   $requirements = array();
   if ($phase == 'runtime') {
     $wetkit_path = FALSE;
-    $filename = 'pe-ap-min.js';
+    $filename = 'wet-boew.min.js';
     $module_path = drupal_get_path('module', 'wetkit_menu');
 
     // An array of possible paths, in descending order of preference.
     $possible_paths = array(
-      'profiles/wetkit/libraries/wet-boew/dist/js',
-      $module_path . 'sites/all/libraries/wet-boew',
-      $module_path,
+      'profiles/wetkit/libraries/wet-boew/js',
+      'profiles/wetkit/libraries/wet-boew-base/js',
+      'profiles/wetkit/libraries/wet-boew-gc-intranet/js',
+      'profiles/wetkit/libraries/wet-boew-gcweb/js',
+      'profiles/wetkit/libraries/wet-boew-gcwu-fegc/js',
+      'profiles/wetkit/libraries/wet-boew-ogpl/js',
     );
 
     // Proper Libraries API support.
