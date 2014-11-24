@@ -32,7 +32,9 @@ function wetkit_menu_menu_link_menu_block_megamenu($variables) {
   $depth = $element['#original_link']['depth'];
   $has_children = $element['#original_link']['has_children'];
   $has_nolink = (in_array($element['#href'], array('<nolink>')) ? $element['#title'] : l($element['#title'], $element['#href'], $element['#localized_options']));
-  $mb_mainlink = '<div class="mb-main-link">' . l($element['#title'] . ' - ' . t('Main Page'), $element['#href'], $element['#localized_options']) . '</div>';
+  $mainlink_options = $element['#localized_options'];
+  unset($mainlink_options['minipanel']);
+  $mb_mainlink = '<div class="mb-main-link">' . l($element['#title'] . ' - ' . t('Main Page'), $element['#href'], $mainlink_options) . '</div>';
 
   // Recursion.
   $sub_menu = '';
