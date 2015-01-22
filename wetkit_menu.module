@@ -35,9 +35,9 @@ function wetkit_menu_preprocess_panels_pane(&$variables) {
     'ctools-megamenu',
     'ctools-sidebar',
   );
-  if (isset($variables['content']['delta']) && !is_array($variables['content']['delta'])) {
+  if (isset($variables['content']['#delta']) && !is_array($variables['content']['#delta'])) {
     foreach ($supported_menus as $key => $value) {
-      if (strpos($variables['content']['delta'], $value) === 0) {
+      if (strpos($variables['content']['#delta'], $value) === 0) {
         $variables['theme_hook_suggestions'][] = 'wetkit_menu_panels_pane';
       }
     }
