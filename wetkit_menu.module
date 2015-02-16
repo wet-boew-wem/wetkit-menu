@@ -117,8 +117,11 @@ function wetkit_menu_theme($existing, $type, $theme, $path) {
  * Implements hook_theme_registry_alter().
  */
 function wetkit_menu_theme_registry_alter(&$theme_registry) {
-  $theme_registry['link']['old function'] = $theme_registry['link']['function'];
-  $theme_registry['link']['function'] = 'wetkit_menu__preprocess_link';
+  // Copy the original `link` theme function into our namespace, then override
+  // the original function with our version.  The original will be invoked by
+  // our version.
+  $theme_registry['wetkit_menu_theme_link_default'] = $theme_registry['link'];
+  $theme_registry['link']['function'] = 'wetkit_menu_theme_link';
   $theme_registry['link']['final'] = TRUE;
 
   if (module_exists('menu_block')) {
@@ -394,11 +397,13 @@ function wetkit_menu_prepare_links($links) {
 }
 
 /**
- * Menu callback for theme_link.
+ * This replacement theme function adds minipanels support to theme_link()
+ * without disturbing themes that may also implement this function.
  *
- * See @wetkit_menu_theme_registry_alter.
+ * @see wetkit_menu_theme_registry_alter()
+ * @see theme_link()
  */
-function wetkit_menu__preprocess_link($link) {
+function wetkit_menu_theme_link($link) {
   $matches = array();
 
   if (!empty($link['options']['minipanel'])) {
@@ -425,17 +430,7 @@ function wetkit_menu__preprocess_link($link) {
       }
     }
   }
-  $registry = theme_get_registry();
-  if (isset($registry['link']['old function'])) {
-    return $registry['link']['old function']($link);
-  }
-  // compatibility with Theme Developer -- see https://drupal.org/node/1992006
-  elseif (isset($registry['link']['original']['old function'])) {
-    return $registry['link']['original']['old function']($link);
-  }
-  else {
-    return l($link['text'],$link['path'],$link['options']);
-  }
+  return theme('wetkit_menu_theme_link_default', $link);
 }
 
 /**
