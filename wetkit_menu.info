@@ -1,5 +1,5 @@
 name = WetKit Menu
-description = Specify a mini panel to appear when a user hovers over a menu item.
+description = Specify a mini panel to appear when a user hovers over a menu item for use with the Drupal Web Experience Toolkit (WxT).
 core = 7.x
 package = WetKit
 dependencies[] = ctools
