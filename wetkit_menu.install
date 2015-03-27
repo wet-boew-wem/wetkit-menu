@@ -8,13 +8,6 @@
  * Implements hook_install().
  */
 function wetkit_menu_install() {
-  // Check the requirements.
-  $requirements = wetkit_menu_requirements('runtime');
-  // See if an error was returned.
-  if (!empty($requirements['wetkit_menu']['severity']) && $requirements['wetkit_menu']['severity'] == REQUIREMENT_ERROR) {
-    drupal_set_message($requirements['wetkit_menu']['description'], 'warning');
-  }
-
   // Allow each menu to be menu_minipanel-ized, with some exceptions.
   _wetkit_menu_enable_menus();
 }
@@ -47,68 +40,6 @@ function wetkit_menu_uninstall() {
       ->condition('mlid', $menu->mlid)
       ->execute();
   }
-}
-
-/**
- * Implements hook_requirements().
- */
-function wetkit_menu_requirements($phase) {
-  $t = get_t();
-  $requirements = array();
-  if ($phase == 'runtime') {
-    $wetkit_path = FALSE;
-    $filename = 'wet-boew.min.js';
-    $module_path = drupal_get_path('module', 'wetkit_menu');
-
-    // An array of possible paths, in descending order of preference.
-    $possible_paths = array(
-      'profiles/wetkit/libraries/wet-boew/js',
-      'profiles/wetkit/libraries/wet-boew-base/js',
-      'profiles/wetkit/libraries/wet-boew-gc-intranet/js',
-      'profiles/wetkit/libraries/wet-boew-gcweb/js',
-      'profiles/wetkit/libraries/wet-boew-gcwu-fegc/js',
-      'profiles/wetkit/libraries/wet-boew-ogpl/js',
-    );
-
-    // Proper Libraries API support.
-    if (function_exists('libraries_get_path')) {
-      $lib_path = libraries_get_path('wet-boew') . '/dist/js';
-      if (!empty($lib_path) && !in_array($lib_path, $possible_paths)) {
-        array_unshift($possible_paths, $lib_path);
-      }
-    }
-
-    // Check each of the paths.
-    foreach ($possible_paths as $path) {
-      // If the file exists, this is the one we'll use.
-      if (file_exists($path . '/' . $filename)) {
-        $wetkit_path = $path . '/' . $filename;
-        continue;
-      }
-    }
-
-    // If the file was not found, leave a message for the user.
-    if (empty($wetkit_path)) {
-      $requirements['wetkit_menu'] = array(
-        'description' => $t('The module is enabled but the WxT library has not been downloaded.'),
-        'severity' => REQUIREMENT_ERROR,
-        'title' => $t('WetKit Menus'),
-        'value' => $t('WxT library not found'),
-      );
-    }
-
-    // Seeing as we're running this check at all, lets update the stored path.
-    else {
-      $requirements['wetkit_menu'] = array(
-        'severity' => REQUIREMENT_OK,
-        'title' => $t('WetKit Menus'),
-        'value' => $t('WET library in use: <em>!path</em>.', array('!path' => $wetkit_path)),
-      );
-      $cid = 'wetkit_menu_wet_path';
-      cache_set($cid, $wetkit_path);
-    }
-  }
-  return $requirements;
 }
 
 /**
