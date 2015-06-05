@@ -62,6 +62,17 @@ function wetkit_menu_preprocess_menu_block_wrapper(&$variables) {
       }
     }
   }
+
+  // Force a theme_menu_tree hook based on the menu-link theme
+  if (isset($variables['config']['theme']) && $variables['config']['theme'] == 'menu_link__menu_block__wxt_group_list'){
+    if (isset($variables['content']['#theme_wrappers'][0])) {
+      $key = array_search('menu_tree__menu_block', $variables['content']['#theme_wrappers'][0]);
+      // Need to be type specific.
+      if ($key !== FALSE) {
+        array_splice($variables['content']['#theme_wrappers'][0], $key, 0, 'menu_tree__menu_block__group_list');
+      }
+    }
+  }
 }
 
 /**
@@ -77,6 +88,7 @@ function wetkit_menu_menu_block_get_theme_overrides() {
     'menu_link__menu_block__wxt_sidebar' => t('Sidebar'),
     'menu_link__menu_block__wxt_sidebar_right' => t('Sidebar Right'),
     'menu_link__menu_block__wxt_section' => t('Section'),
+    'menu_link__menu_block__wxt_group_list' => t('Group list'),
   );
 }
 
@@ -157,6 +169,14 @@ function wetkit_menu_theme_registry_alter(&$theme_registry) {
     $theme_registry['menu_link__menu_block__wxt_section']['function'] = 'wetkit_menu_menu_link_menu_block_section';
     $theme_registry['menu_link__menu_block__wxt_section']['type'] = 'theme_engine';
     $theme_registry['menu_link__menu_block__wxt_section']['final'] = TRUE;
+
+    $theme_registry['menu_link__menu_block__wxt_group_list']['base hook'] = 'menu_link';
+    $theme_registry['menu_link__menu_block__wxt_group_list']['render element'] = 'element';
+    $theme_registry['menu_link__menu_block__wxt_group_list']['theme path'] = drupal_get_path('module', 'wetkit_menu');
+    $theme_registry['menu_link__menu_block__wxt_group_list']['file'] = drupal_get_path('module', 'wetkit_menu') . '/theme/menu.theme.inc';
+    $theme_registry['menu_link__menu_block__wxt_group_list']['function'] = 'wetkit_menu_menu_link_menu_block_group_list';
+    $theme_registry['menu_link__menu_block__wxt_group_list']['type'] = 'theme_engine';
+    $theme_registry['menu_link__menu_block__wxt_group_list']['final'] = TRUE;
   }
 }
 

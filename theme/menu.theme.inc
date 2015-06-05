@@ -370,6 +370,31 @@ function wetkit_menu_menu_link_menu_block_sidebar_right($variables) {
 }
 
 /**
+ * Override or insert variables into the menu link templates.
+ *
+ * @param array $variables
+ *   An array of variables to pass to the theme template.
+ */
+function wetkit_menu_menu_link_menu_block_group_list($variables) {
+  $element = $variables['element'];
+  $sub_menu = '';
+  if ($element['#below']) {
+      // Remove wrapper. They will be outputted on the same level.
+      unset($element['#below']['#theme_wrappers']);
+      $sub_menu = drupal_render($element['#below']);
+  }
+  // On primary navigation menu, class 'active' is not set on active menu item.
+  // @see https://drupal.org/node/1896674
+  if (($element['#href'] == $_GET['q'] || ($element['#href'] == '<front>' && drupal_is_front_page())) && (empty($element['#localized_options']['language']))) {
+    $element['#attributes']['class'][] = 'active';
+  }
+
+  $element['#localized_options']['attributes']['class'][] = 'list-group-item';
+  $output = l($element['#title'], $element['#href'], $element['#localized_options']);
+  return $output . "\n" . $sub_menu . "\n";
+}
+
+/**
  * Override or insert variables into the menu tree templates.
  *
  * @param array $variables
