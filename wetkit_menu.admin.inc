@@ -35,8 +35,15 @@ function wetkit_menu_admin() {
 
   // Show the current status of the WET library.
   include_once 'includes/install.inc';
-  module_load_include('install', 'wetkit_menu');
-  $status = wetkit_menu_requirements('runtime');
+  $wetkit_path = wetkit_menu_get_wet_path();
+  $status = array('wetkit_menu' => array());
+  if ($wetkit_path) {
+    $status['wetkit_menu']['value'] = t('WxT library in use: <em>!path</em>.', array('!path' => $wetkit_path));
+  } else {
+    $status['wetkit_menu']['value'] = t('WxT library not found');
+    $status['wetkit_menu']['description'] = t('The module is enabled but the WxT library has not been downloaded.');
+  }
+
   $form['status'] = array(
     '#type' => 'fieldset',
     '#title' => t('WET Library Status'),

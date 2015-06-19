@@ -201,22 +201,19 @@ function wetkit_menu_get_wet_path() {
 
     // There was no cached data, so get the path & cache it for later.
     else {
-      $filename = 'pe-ap-min.js';
+      $filename = 'wet-boew.min.js';
       $module_path = drupal_get_path('module', 'wetkit_menu');
 
       // An array of possible paths, in descending order of preference.
       $possible_paths = array(
         // Ideally should be stored here.
-        'profiles/wetkit/libraries/wet-boew/dist/js',
-        // Legacy paths, including some possible incorrect ones, but the
-        // performance hit should be negligible.
-        $module_path . 'sites/all/libraries/wet-boew',
-        $module_path,
+        'profiles/wetkit/libraries/wet-boew/js',
       );
 
       // Proper Libraries API support.
       if (function_exists('libraries_get_path')) {
-        $lib_path = libraries_get_path('wet-boew') . '/dist/js';
+        $wxt_active = variable_get('wetkit_wetboew_theme', 'wet-boew');
+        $lib_path = libraries_get_path($wxt_active) . '/js';
         if (!empty($lib_path) && !in_array($lib_path, $possible_paths)) {
           array_unshift($possible_paths, $lib_path);
         }
