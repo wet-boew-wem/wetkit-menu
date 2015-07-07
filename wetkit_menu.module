@@ -539,40 +539,12 @@ function _wetkit_menu_link_class_name($minipanel_name) {
  * This probably means the module could be refactored.
  */
 function wetkit_menu_page_alter(&$page) {
-  // Optionally ignore certain pages.
-  if (wetkit_menu_excluded_path()) {
-    return;
-  }
-
-  // Load each of the menus that are configured for wetkit_menu. It is safe
-  // to use menu_get_names() here as the data is cached, and it won't be
-  // possible that the shortcut sets have been accidentally added.
-  $load_requirements = FALSE;
-  $enabled_menus = array();
-  foreach (menu_get_names() as $menu) {
-    if (variable_get('wetkit_menu_' . $menu . '_enabled', FALSE)) {
-      $enabled_menus[] = $menu;
-
-      // Loop through each level of the menu tree and see whether WET needs to
-      // be loaded.
-      $level = 0;
-      while ($items = menu_navigation_links($menu, $level)) {
-        if (wetkit_menu_prepare_links($items)) {
-          $load_requirements = TRUE;
-        }
-        $level++;
-      }
-    }
-  }
-
-  // If menus are actually needed, load the required scripts & CSS.
-  if ($load_requirements) {
-    // The path to this module.
-    $path = drupal_get_path('module', 'wetkit_menu');
-
-    // Load the module's custom CSS.
-    drupal_add_css($path . '/css/wetkit_menu.css');
-  }
+  // The path to this module.
+  $path = drupal_get_path('module', 'wetkit_menu');
+  // Load the module's custom CSS.
+  drupal_add_css($path . '/css/wetkit_menu.css', array(
+    'every_page' => TRUE,
+  ));
 }
 
 /**
