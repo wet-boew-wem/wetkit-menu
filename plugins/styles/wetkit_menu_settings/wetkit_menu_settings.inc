@@ -5,7 +5,7 @@
  */
 
 $plugin = array(
-  'title' => t('WetKit Menu'),
+  'title' => t('Menu (Deprecated)'),
   'description' => t('Provide advanced support for menus / minipanels integration with WxT markup.'),
   'render pane' => 'wetkit_menu_wetkit_menu_settings_render_pane',
   'pane settings form' => 'wetkit_menu_wetkit_menu_settings_style_settings_form',

@@ -286,10 +286,20 @@ function wetkit_menu_menu_link_menu_block_sidebar($variables) {
       $element['#localized_options']['attributes']['data-toggle'] = 'dropdown';
     }
   }
+
   // On primary navigation menu, class 'active' is not set on active menu item.
   // @see https://drupal.org/node/1896674
   if (($element['#href'] == $_GET['q'] || ($element['#href'] == '<front>' && drupal_is_front_page())) && (empty($element['#localized_options']['language']))) {
     $element['#attributes']['class'][] = 'active';
+  }
+
+  // <nolink> handling for wxt.
+  if (in_array($element['#href'], array('<nolink>'))) {
+    $element['#href'] = '#';
+    $element['#localized_options'] = array(
+      'fragment' => 'wb-sec',
+      'external' => TRUE,
+    );
   }
 
   if ($element['#original_link']['depth'] == 1) {
@@ -301,7 +311,6 @@ function wetkit_menu_menu_link_menu_block_sidebar($variables) {
   }
   return '<li' . drupal_attributes($element['#attributes']) . '>' . $output . $sub_menu . "</li>\n";
 }
-
 
 /**
  * Override or insert variables into the menu link templates.
