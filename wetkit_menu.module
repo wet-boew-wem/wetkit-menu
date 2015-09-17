@@ -212,7 +212,7 @@ function wetkit_menu_get_wet_path() {
 
       // Proper Libraries API support.
       if (function_exists('libraries_get_path')) {
-        $wxt_active = variable_get('wetkit_wetboew_theme', 'wet-boew');
+        $wxt_active = variable_get('wetkit_wetboew_theme', 'theme-wet-boew');
         $lib_path = libraries_get_path($wxt_active) . '/js';
         if (!empty($lib_path) && !in_array($lib_path, $possible_paths)) {
           array_unshift($possible_paths, $lib_path);
