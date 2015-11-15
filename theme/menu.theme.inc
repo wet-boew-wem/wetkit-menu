@@ -263,19 +263,73 @@ function wetkit_menu_menu_link_menu_block_mid_footer($variables) {
 function wetkit_menu_menu_link_menu_block_sidebar($variables) {
   $element = $variables['element'];
   $sub_menu = '';
+  $sub_sub_menu = '';
+  $sub_sub_sub_menu = '';
+  $has_nolink = (in_array($element['#href'], array('<nolink>')) ? l($element['#title'], '#wb-tphp', $element['#localized_options']) : l($element['#title'], $element['#href'], $element['#localized_options']));
 
-  if ($element['#below']) {
+  if ($element['#below']  || ($element['#original_link']['has_children'] && $element['#original_link']['depth'] == 1 && count($element['#below']) == 0)) {
     // Prevent dropdown functions from being added to management menu so it
     // does not affect the navbar module.
     if (($element['#original_link']['menu_name'] == 'management') && (module_exists('navbar'))) {
       $sub_menu = drupal_render($element['#below']);
+      if (isset($element['#below']['#below'])) {
+        $sub_sub_menu = drupal_render($element['#below']['#below']);
+      }
     }
     elseif ((!empty($element['#original_link']['depth'])) && ($element['#original_link']['depth'] == 1)) {
       // Add our own wrapper.
       unset($element['#below']['#theme_wrappers']);
-      $sub_menu = '<ul class="list-group menu list-unstyled">' . drupal_render($element['#below']) . '</ul>';
       // Generate as standard dropdown.
-      //$element['#title'] .= ' <span class="caret"></span>';
+      $element['#title'] .= ' <span class="expicon glyphicon glyphicon-chevron-down"></span>';
+      $element['#attributes']['class'][] = 'dropdown';
+      $element['#localized_options']['html'] = TRUE;
+
+      // Set dropdown trigger element to # to prevent inadvertant page loading
+      // when a submenu link is clicked.
+      $element['#localized_options']['attributes']['data-target'] = '#';
+      $element['#localized_options']['attributes']['class'][] = 'dropdown-toggle';
+      $element['#localized_options']['attributes']['data-toggle'] = 'dropdown';
+      foreach ($element['#below'] as $key => $link) {
+        if (is_numeric($key)) {
+          if ($element['#below'][$key]['#original_link']['has_children'] && $element['#below'][$key]['#original_link']['expanded']) {
+            $element['#below'][$key]['#title'] = $element['#below'][$key]['#title'] . '<span class="expicon glyphicon glyphicon-chevron-down"></span>';
+            $element['#below'][$key]['#localized_options']['attributes']['data-target'] = '#';
+            $element['#below'][$key]['#attributes']['class'][] = 'dropdown';
+           $element['#below'][$key]['#localized_options']['html'] = TRUE;
+         }
+        }
+      }
+      $sub_menu = '<ul class="list-group menu list-unstyled">' . drupal_render($element['#below']) . '</ul>';
+    }
+    elseif ((!empty($element['#original_link']['depth'])) && $element['#original_link']['expanded'] && $element['#original_link']['depth'] == 2) {
+      unset($element['#below']['#theme_wrappers']);
+      // Generate as standard dropdown.
+      $element['#attributes']['class'][] = 'dropdown';
+      $element['#localized_options']['html'] = TRUE;
+
+      // Set dropdown trigger element to # to prevent inadvertant page loading
+      // when a submenu link is clicked.
+      $element['#localized_options']['attributes']['data-target'] = '#';
+      $element['#localized_options']['attributes']['class'][] = 'dropdown-toggle';
+      $element['#localized_options']['attributes']['data-toggle'] = 'dropdown';
+      foreach ($element['#below'] as $key => $link) {
+        if (is_numeric($key)) {
+          if ($element['#below'][$key]['#original_link']['has_children'] && $element['#below'][$key]['#original_link']['expanded'] && !count($element['#below'][$key]['#below']) ) {
+            //Chevron class was already added by previous render, no need to add it when clicked.
+            $element['#below'][$key]['#title'] = $element['#below'][$key]['#title'] . '<span class="expicon glyphicon glyphicon-chevron-down"></span>';
+            $element['#below'][$key]['#localized_options']['attributes']['data-target'] = '#';
+            $element['#below'][$key]['#attributes']['class'][] = 'dropdown';
+            $element['#below'][$key]['#localized_options']['html'] = TRUE;
+          }
+        }
+      }
+      $sub_sub_menu = '<ul class="list-group menu list-unstyled">' . drupal_render($element['#below']) . '</ul>';
+    }
+    if ((!empty($element['#original_link']['depth'])) && $element['#original_link']['depth'] == 3) {
+      unset($element['#below']['#theme_wrappers']);
+      $sub_sub_sub_menu = '<ul class="list-group menu list-unstyled active">' . drupal_render($element['#below']) . '</ul>';
+      // Generate as standard dropdown.
+      $element['#title'] .= ' <span class="expicon glyphicon glyphicon-chevron-down"></span>';
       $element['#attributes']['class'][] = 'dropdown';
       $element['#localized_options']['html'] = TRUE;
 
@@ -309,7 +363,7 @@ function wetkit_menu_menu_link_menu_block_sidebar($variables) {
     $element['#localized_options']['attributes']['class'][] = 'list-group-item';
     $output = l($element['#title'], $element['#href'], $element['#localized_options']);
   }
-  return '<li' . drupal_attributes($element['#attributes']) . '>' . $output . $sub_menu . "</li>\n";
+  return '<li' . drupal_attributes($element['#attributes']) . '>' . $output . $sub_menu . $sub_sub_menu . $sub_sub_sub_menu . "</li>\n";
 }
 
 /**
@@ -427,7 +481,7 @@ function wetkit_menu_menu_tree__menu_block($variables) {
  * Custom array_depth implementation.
  */
 function _menu_depth(array $array) {
-  $max_depth = 1;
+  $max_depth = 4;
   foreach ($array as $value) {
     if (isset($value['#below']) && is_array($value['#below'])) {
       $depth = _menu_depth($value['#below']) + 1;
