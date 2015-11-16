@@ -353,6 +353,7 @@ function wetkit_menu_menu_link_menu_block_sidebar($variables) {
     $element['#localized_options'] = array(
       'fragment' => 'wb-sec',
       'external' => TRUE,
+      'html' => TRUE,
     );
   }
 
