@@ -266,6 +266,7 @@ function wetkit_menu_menu_link_menu_block_sidebar($variables) {
   $sub_sub_menu = '';
   $sub_sub_sub_menu = '';
   $has_nolink = (in_array($element['#href'], array('<nolink>')) ? l($element['#title'], '#wb-tphp', $element['#localized_options']) : l($element['#title'], $element['#href'], $element['#localized_options']));
+  $has_chevron = (theme_get_setting('wetkit_sidebar_no_chevron')) ? '' : ' <span class="expicon glyphicon glyphicon-chevron-down"></span>';
 
   if ($element['#below']  || ($element['#original_link']['has_children'] && $element['#original_link']['depth'] == 1 && count($element['#below']) == 0)) {
     // Prevent dropdown functions from being added to management menu so it
@@ -280,7 +281,7 @@ function wetkit_menu_menu_link_menu_block_sidebar($variables) {
       // Add our own wrapper.
       unset($element['#below']['#theme_wrappers']);
       // Generate as standard dropdown.
-      $element['#title'] .= ' <span class="expicon glyphicon glyphicon-chevron-down"></span>';
+      $element['#title'] .= $has_chevron;
       $element['#attributes']['class'][] = 'dropdown';
       $element['#localized_options']['html'] = TRUE;
 
@@ -292,7 +293,7 @@ function wetkit_menu_menu_link_menu_block_sidebar($variables) {
       foreach ($element['#below'] as $key => $link) {
         if (is_numeric($key)) {
           if ($element['#below'][$key]['#original_link']['has_children'] && $element['#below'][$key]['#original_link']['expanded']) {
-            $element['#below'][$key]['#title'] = $element['#below'][$key]['#title'] . '<span class="expicon glyphicon glyphicon-chevron-down"></span>';
+            $element['#below'][$key]['#title'] = $element['#below'][$key]['#title'] . $has_chevron;
             $element['#below'][$key]['#localized_options']['attributes']['data-target'] = '#';
             $element['#below'][$key]['#attributes']['class'][] = 'dropdown';
            $element['#below'][$key]['#localized_options']['html'] = TRUE;
@@ -329,7 +330,7 @@ function wetkit_menu_menu_link_menu_block_sidebar($variables) {
       unset($element['#below']['#theme_wrappers']);
       $sub_sub_sub_menu = '<ul class="list-group menu list-unstyled active">' . drupal_render($element['#below']) . '</ul>';
       // Generate as standard dropdown.
-      $element['#title'] .= ' <span class="expicon glyphicon glyphicon-chevron-down"></span>';
+      $element['#title'] .= $has_chevron;
       $element['#attributes']['class'][] = 'dropdown';
       $element['#localized_options']['html'] = TRUE;
 
