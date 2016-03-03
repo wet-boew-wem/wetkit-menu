@@ -32,7 +32,7 @@
   <?php if ($pane_prefix): ?>
     <?php print $pane_prefix; ?>
   <?php endif; ?>
-  <<?php print $tag . $attributes . $id; ?>>
+  <div<?php print $tag . $attributes . $id; ?>>
     <div class="block-inner clearfix">
       <?php if ($admin_links): ?>
         <?php print $admin_links; ?>
@@ -55,7 +55,7 @@
       </div>
 
     </div>
-  </<?php print $tag; ?>>
+  </div>
   <?php if ($pane_suffix): ?>
     <?php print $pane_suffix; ?>
   <?php endif; ?>
