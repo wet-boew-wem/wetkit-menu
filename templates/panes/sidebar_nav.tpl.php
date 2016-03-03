@@ -27,7 +27,7 @@
  *   data including the contexts and all of the other panes being displayed.
  */
 ?>
-<div class="span-2 float-right">
+<div class="wetkit-menu pull-right">
   <div class="module-menu-section">
   <?php if ($pane_prefix): ?>
     <?php print $pane_prefix; ?>
