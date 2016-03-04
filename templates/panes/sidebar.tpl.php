@@ -1,17 +1,7 @@
 <?php
 /**
- * @file
- * Adaptivetheme panel pane template.
- *
- * This template has block type classes that react to styles applied to blocks,
- * saving the trouble of having to style multiple selectors to target blocks
- * and panel panes. This template also makes use the attributes arrays for the
- * wrapper and content wrapper.
- *
- * Adaptivetheme variables:
- * - $is_mobile: Bool, requires the Browscap module to return TRUE for mobile
- *   devices. Use to test for a mobile context.
- * - $tag: top level wrapper element, section or div.
+ * @file panels-pane.tpl.php
+ * Main panel pane template
  *
  * Variables available:
  * - $pane->type: the content type inside this pane
@@ -30,7 +20,6 @@
 <?php if ($pane_prefix): ?>
   <?php print $pane_prefix; ?>
 <?php endif; ?>
-
 <?php print render($title_prefix); ?>
   <?php if ($title): ?>
     <?php if (!theme_get_setting('wetkit_render_no_link')): ?>
@@ -41,7 +30,6 @@
   <?php endif; ?>
 <?php print render($title_suffix); ?>
 <?php print render($content); ?>
-
 <?php if ($pane_suffix): ?>
   <?php print $pane_suffix; ?>
 <?php endif; ?>
