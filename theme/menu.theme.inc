@@ -425,12 +425,12 @@ function wetkit_menu_menu_link_menu_block_sidebar_right($variables) {
   $element = $variables['element'];
   $sub_menu = '';
   if (isset($element['#below']) && is_array($element['#below'])) {
-    $sub_menu = drupal_render($element['#below']);
+    unset($element['#below']['#theme_wrappers']);
+    $sub_menu = '<ul class="list-group list-unstyled">' . drupal_render($element['#below']) . '</ul>';
   }
   $output = '';
-
+  $element['#attributes']['class'][] = 'list-group-item';
   $output .= '<li' . drupal_attributes($element['#attributes']) . '>' . l($element['#title'], $element['#href'], $element['#localized_options']) . $sub_menu . "</li>\n";
-
   return $output;
 }
 
