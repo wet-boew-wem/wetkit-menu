@@ -35,16 +35,17 @@ function wetkit_menu_preprocess_panels_pane(&$variables) {
     'ctools-megamenu',
     'ctools-sidebar',
   );
+
   if (isset($variables['content']['#delta']) && !is_array($variables['content']['#delta'])) {
     foreach ($supported_menus as $key => $value) {
       if (strpos($variables['content']['#delta'], $value) === 0) {
         $variables['theme_hook_suggestions'][] = 'wetkit_menu_panels_pane';
       }
     }
-    if (isset($variables['content']['#config']) && !is_array($variables['content']['#config'])) {
-      if (isset($variables['content']['#config']['theme']) && $variables['content']['#config']['theme'] == 'menu_link__menu_block__wxt_sidebar_right') {
-        $variables['theme_hook_suggestions'][] = 'wetkit_menu_panels_pane_sidebar_right';
-      }
+  }
+  if (isset($variables['content']['#config']) && is_array($variables['content']['#config'])) {
+    if (isset($variables['content']['#config']['theme']) && $variables['content']['#config']['theme'] == 'menu_link__menu_block__wxt_sidebar_right') {
+      $variables['theme_hook_suggestions'][] = 'wetkit_menu_panels_pane_sidebar_right';
     }
   }
 }
