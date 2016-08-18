@@ -35,6 +35,8 @@ function wetkit_menu_default_panels_mini() {
   $display->cache = array();
   $display->title = '';
   $display->uuid = '24a2a4b8-8724-f0e4-09cb-41795fff62e1';
+  $display->storage_type = 'panels_mini';
+  $display->storage_id = 'wetkit_mini_panels_drupal_github';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
@@ -140,6 +142,8 @@ function wetkit_menu_default_panels_mini() {
   $display->cache = array();
   $display->title = '';
   $display->uuid = '24a2a4b8-8724-f0e4-09cb-41795fff62e1';
+  $display->storage_type = 'panels_mini';
+  $display->storage_id = 'wetkit_mini_panels_drupal_wcms';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
@@ -314,6 +318,8 @@ function wetkit_menu_default_panels_mini() {
   $display->cache = array();
   $display->title = '';
   $display->uuid = '24a2a4b8-8724-f0e4-09cb-41795fff62e1';
+  $display->storage_type = 'panels_mini';
+  $display->storage_id = 'wetkit_mini_panels_example_pages';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
@@ -379,6 +385,8 @@ function wetkit_menu_default_panels_mini() {
   $display->cache = array();
   $display->title = '';
   $display->uuid = '24a2a4b8-8724-f0e4-09cb-41795fff62e1';
+  $display->storage_type = 'panels_mini';
+  $display->storage_id = 'wetkit_mini_panels_home';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();

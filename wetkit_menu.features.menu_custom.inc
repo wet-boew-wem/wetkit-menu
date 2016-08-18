@@ -33,6 +33,5 @@ function wetkit_menu_menu_default_menu_custom() {
   t('Sidebar');
   t('Sidebar Menu.');
 
-
   return $menus;
 }
