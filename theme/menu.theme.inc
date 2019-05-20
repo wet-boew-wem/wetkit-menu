@@ -212,7 +212,7 @@ function wetkit_menu_menu_link_menu_block_mid_footer($variables) {
     $theme_prefix = 'ogpl';
   }
   // Canada Theme.
-  elseif ($wxt_active == 'theme-gcweb') {
+  elseif ($wxt_active == 'theme-gcweb' || $wxt_active == 'theme-gcweb-v5') {
     $theme_prefix = 'gcweb';
   }
   // WET Theme.
